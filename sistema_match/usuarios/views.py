@@ -1,5 +1,5 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
@@ -35,10 +35,11 @@ def login(request):
         
         if user: 
             login_django(request, user)
-            return HttpResponse('autenticado')
+            return redirect('/plataforma/')
+            
         else: 
             return HttpResponse('Email ou senha invalidos')
         
-@login_required(login_url="/auth/login/")
+@login_required(login_url="/login/")
 def plataforma(request):
-        return HttpResponse('Plataforma')
+        return render(request, 'plataforma.html')
