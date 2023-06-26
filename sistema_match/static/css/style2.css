@@ -77,13 +77,13 @@ header{
     justify-content: space-between;
 }
 .logoBox{
-    width: 17%;
+    width: 30%;
 }   
 .logoBox img{
     width: 60px;
 }
 .searchBox{
-    width: 100%;
+    width: 400%;
     position: relative;
 }
 .iconBox1{

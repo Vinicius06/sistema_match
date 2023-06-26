@@ -19,7 +19,7 @@
     
 <!-- header section start -->
 
-
+    
     <header>
         <div class="header-container">
             <div class="header-wrapper">
@@ -38,7 +38,7 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <i class="fa-brands fa-facebook-messenger"></i>
                     <i class="fa-solid fa-bell"></i>
-                    <label><img src="images/user.jpg" alt="user"></label>
+                    <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
                     <i class="fa-solid fa-caret-down"></i>
                 </div>
             </div>
@@ -58,68 +58,63 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <img src="images/user.jpg" alt="user">
-                    <h3>Zahidul hossain</h3>
+                    <img src="{% static 'images/gabigol.png' %}" alt="user">
+                        <h3>{{user.username}}</h3>
                 </div>
                
-                <div class="pages">
-                    <h4 class="mini-headign">Pages</h4>
+                <div class="preferencias">
+                    <h4 class="mini-headign">Preferências</h4>
                     <label>
-                        <img src="images/messenger.png" alt="messenger">
-                        <span>messenger</span>
+                        <img src="{% static 'images/filmes.png' %}" alt="filmes">
+                        <span>FILMES</span>
                     </label>
+                    <br>
                     <label>
-                        <img src="images/instagram.png" alt="instagram">
-                        <span>instagram</span>
+                        <img src="{% static 'images/series.png' %}" alt="series">
+                        <span>Séries</span>
                     </label>
-                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                    <br>
+                    <label>
+                        <img src="{% static 'images/livros.png' %}" alt="livros">
+                        <span>Livros</span>
+                    </label>
+                    <br>
+                    <label>
+                        <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
+                        <span>Animações</span>
+                    </label>
+                    <br>
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
                 </div>
-
+                <br>
                 <div class="group">
-                    <h4 class="mini-headign">Group</h4>
+                    <h4 class="mini-headign">Grupos</h4>
                     <label>
-                        <img src="images/gg.png" alt="group01">
-                        <span>Graphic design</span>
+                        <img src="{% static 'images/jovemfla.png' %}" alt="group01">
+                        <span>Jovem Fla</span>
                     </label>
                     
                     <label>
-                        <img src="images/gg2.png" alt="group02">
-                        <span>website design</span>
+                        <img src="{% static 'images/flamanguaca.png' %}" alt="group02">
+                        <span>Fla Manguaça</span>
                     </label>
 
                     <label>
-                        <img src="images/gg3.png" alt="group03">
-                        <span>ZED.zahidul</span>
+                        <img src="{% static 'images/rubronegra.png' %}" alt="group03">
+                        <span>Raça Rubro-Negra</span>
                     </label>
-
-                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
                 </div>
-
-                <div class="games">
-                    <h4 class="mini-headign">Games</h4>
-                    <label>
-                        <img src="images/game.png" alt="game01">
-                        <span>Facebook games</span>
-                    </label>
-                    <label>
-                        <img src="images/game2.png" alt="game02">
-                        <span>Free Play Games</span>
-                    </label>
-                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
-                </div>
-
+                
                 <div class="explore">
-                    <h4 class="mini-headign">Explore</h4>
+                    <h4 class="mini-headign">Explorar</h4>
                    
-                    <a href="#"><i class="fa-solid fa-user-group"></i> Group</a>
-                    <a href="#"><i class="fa-solid fa-star"></i></i> Favorites</a>
-                    <a href="#"><i class="fa-solid fa-bookmark"></i></i> Saves</a>
-                    <a href="#"><i class="fa-solid fa-clock"></i> Events</a>
-                    <a href="#"><i class="fa-solid fa-flag"></i> Pages</a>
+                    <a href="#"><i class="fa-solid fa-user-group"></i>Novos Grupos</a>
 
-                    <div><label class="darkTheme"> <span></span></label> Apply Dark Theme</div>
 
-                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                    <div><label class="darkTheme"> <span></span></label> Aplicar Tema Escuro</div>
+
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
                 </div>
                 
             </div><!-- home left end here -->
@@ -127,132 +122,46 @@
             <!-- home center start here -->
 
             <div class="home-center">
-                <div class="home-center-wrapper">
-                    <div class="stories">
-                        <h3 class="mini-headign">Stories</h3>
-                        <div class="stories-wrapper">
-
-                            <div class="single-stories">
-                                <label><img src="images/user.jpg" alt="user"></label>
-                                <div>
-                                    <img src="images/user.jpg" alt="user">
-                                    <i class="fa-solid fa-circle-plus"></i>
-                                    <b>Create Stories</b>
-                                </div>
-                            </div>
-
-                            <div class="single-stories">
-                                <label><img src="images/us.png" alt="sp"></label>
-                                <div>
-                                    <img src="images/ss.jpg" alt="ss">
-                                    <b>Your Name</b>
-                                </div>
-                            </div>
-
-                            <div class="single-stories">
-                                <label><img src="images/us2.png" alt="sp2"></label>
-                                <div>
-                                    <img src="images/ss2.jpg" alt="ss2">
-                                    <b>Your Name</b>
-                                </div>
-                            </div>
-
-                            <div class="single-stories">
-                                <label><img src="images/us3.png" alt="sp3"></label>
-                                <div>
-                                    <img src="images/ss3.jpg" alt="ss3">
-                                    <b>Your Name</b>
-                                </div>
-                            </div>
-
-                            <div class="single-stories">
-                                <label><img src="images/us4.png" alt="sp4"></label>
-                                <div>
-                                    <img src="images/ss4.jpg" alt="ss4">
-                                    <b>Your Name</b>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-
-                    <div class="createPost">
-
-                        <h3 class="mini-headign">Create Post</h3>
-                        <div class="post-text">
-                            <img src="images/user.jpg" alt="user">
-                            <input type="text-area" placeholder="What's on your mind, zahidul">
-                        </div>
-
-                        <div class="post-icon">
-                            <a href="#" style="background: #ffebed;">
-                            <i style="background: #ff4154;" class="fa-solid fa-camera"></i>
-                            Gallery</a>
-
-                            <a href="#" style="background: #ccdcff;">
-                            <i style="background: #0053ff;" class="fa-solid fa-video"></i>
-                            Video</a>
-
-                            <a href="#" style="background: #d7ffef;">
-                            <i style="background: #00d181;" class="fa-solid fa-location-dot"></i>
-                            Location</a>
-
-                            <a href="#" style="background: #cff3ff;">
-                            <i style="background: #04c3ff;" class="fa-solid fa-gift"></i>
-                            Gift</a>
-                            
-                            <a href="#" style="background: #fff4d1;">
-                            <i style="background: #ffca28;" class="fa-solid fa-face-grin-beam"></i>
-                            Feeling / Acrivity</a>
-
-                        </div>
-
-                    </div>
-
-                   
+                <div class="home-center-wrapper"> 
                     <div class="fb-post1">
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">popular</li>
-                                    <li>recent</li>
-                                    <li>most view</li>
+                                    <li class="active">Tempo Linha</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
                                 <div class="post-title">
-                                    <img src="images/user2.jpg" alt="user picture">
+                                    <img src="{% static 'images/jovemfla.png' %}" alt="group01"><h1> Jovem Fla </h1>
                                     <ul>
-                                        <li><h3>Arham Kabir <span> . 2 hours ago</span></h3></li>
-                                        <li><span>02 march at 12:55 PM</span></li>
+                                        <img src="{% static 'images/Jaoboy.png' %}" alt="user">
+                                        <li><h4>Jaoboy <span> . 2 horas atrás</span></h4></li>
+                                        <li><span>26 de junho às 14:23 PM</span></li>
                                     </ul>
-                                    <p>Hello Everyone Thanks for Watching Please SUBSCRIBE My Channel - Like Comments and Share
-                                        <a href="https://www.youtube.com/channel/UCHhGX-DD7A8jq7J_NPGN6gA">https://www.youtube.com/channel/UCHhGX-DD7A8jq7J_NPGN6gA</a>
+                                    <p>Sempre que eu vejo eu não vejo tô vendo agora que vocês tão mostrando:
+                                        <a href="https://www.youtube.com/watch?v=YQ1ihQNjpik">Clique e seja feliz!</a>
                                     </p>
                                 </div>
 
                                 <div class="post-images">
                                     <div class="post-images1">
-                                        <img src="images/pp.jpg" alt="post images 01">
-                                        <img src="images/pp2.jpg" alt="post images 02">
-                                        <img src="images/pp3.jpg" alt="post images 03">
+                                        <img src="{% static 'images/Jaoboy.png' %}" alt="post images 01">
+                                        <img src="{% static 'images/taças.png' %}" alt="post images 02">
+                                        <img src="{% static 'images/taças.png' %}" alt="post images 03">
                                     </div>
                                     <div class="post-images2">
-                                        <img src="images/pp4.jpg" alt="post images 04">
+                                        <img src="{% static 'images/taças.png' %}" alt="post images 04">
                                     </div>
                                 </div>
 
                                 <div class="like-comment">
                                     <ul>
                                         <li>
-                                            <img src="images/love.png" alt="love">
-                                            <img src="images/like.png" alt="like">
-                                            <span>22k like</span>
+                                            <img src="{% static 'images/love.png' %}" alt="love">
+                                            <img src="{% static 'images/like.png' %}" alt="like">
+                                            <span>69 reações</span>
                                         </li>
-                                        <li><i class="fa-regular fa-comment-dots"></i> <span>555 comments</span></li>
-                                        <li><i class="fa-solid fa-share-from-square"></i> <span>254 share</span></li>
+                                        <li><i class="fa-regular fa-comment-dots"></i> <span>5 comentários</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -266,26 +175,23 @@
                 <div class="home-right-wrapper">
 
                     <div class="event-friend">
-                        <div class="event">
-                            <h3 class="heading">Upcoming Events <span>see all</span></h3>
-                            <img src="images/eve.jpg" alt="event-img">
-                            <div class="event-date">
-                                <h3>21 <b>july</b></h3>
-                                <h4>United state of America <span>New York City</span></h4>
-                            </div>
-                            <button><i class="fa-regular fa-star"></i> interested</button>
-                        </div>
-
-                        <hr>
                     
                         <div class="friend">
-                            <h3 class="heading">Friend Requests <span>see all</span></h3>
+                            <h3 class="heading">Pedidos de Amizade <span>ver tudo</span></h3>
                             <ul>
-                                <li><img src="images/user4.jpg" alt="user"></li>
+                                <li><img src="{% static 'images/cristiano.png' %}" alt="user"></li>
                                 <li>
-                                    <b>armanul islam</b>
-                                    <p>Lorem ipsum dolor sit amet.</p>
-                                    <button>confirm</button><button class="friend-remove">remove</button>
+                                    <b>Cristiano Ronaldo</b>
+                                    <p>Sou melhor que o Messi</p>
+                                    <button>confirmar</button><button class="friend-remove">remover</button>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li><img src="{% static 'images/messi.png' %}" alt="user"></li>
+                                <li>
+                                    <b>Messi</b>
+                                    <p>Papumpirulito Pão Doce</p>
+                                    <button>confirmar</button><button class="friend-remove">remover</button>
                                 </li>
                             </ul>
                         </div>
@@ -296,15 +202,15 @@
                         <ul>
                             <li>
                                 <i class="fa-solid fa-circle-plus"></i>
-                                <h4>Create Page & Groups</h4>
+                                <h4>Criar Grupos</h4>
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </li>
                             <li>
-                                <img src="images/group.jpg" alt="groups">
+                                <img src="{% static 'images/MRC.png' %}" alt="groups">
                             </li>
                             <li>
-                                <b>simple group or page name <span>200k Members</span></b>
-                                <button>Join Group</button>
+                                <b>Mengão Rage Comics <span>200k Membros</span></b>
+                                <button>Juntar-se ao Grupo</button>
                             </li>
                         </ul>
                     </div>
@@ -312,26 +218,26 @@
                     <div class="messenger">
                         <div class="messenger-search">
                             <i class="fa-solid fa-user-group"></i>
-                            <h4>Messenger</h4>
-                            <input type="search" placeholder="Search">
+                            <h4>Amigos</h4>
+                            <input type="search" placeholder="Pesquisar">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <ul>
                             <li>
-                                <img src="images/us2.png" alt="user">
-                                <b>Zunayed Hossain <span>Online</span></b>
+                                <img src="{% static 'images/Jaoboy.png' %}" alt="user">
+                                <b>Jaoboy <span>Online</span></b>
                                 <i class="fa-brands fa-facebook-messenger"></i>
                             </li>
 
                             <li>
-                                <img src="images/us3.png" alt="user">
-                                <b>Armanul Islam <span>Offline</span></b>
+                                <img src="{% static 'images/gustavin.png' %}" alt="user">
+                                <b>Gustavin <span>Offline</span></b>
                                 <i class="fa-brands fa-facebook-messenger"></i>
                             </li>
 
                             <li>
-                                <img src="images/us4.png" alt="user">
-                                <b>Mohammad Amir <span>Online</span></b>
+                                <img src="{% static 'images/Neymar.png' %}" alt="user">
+                                <b>Neymar <span>Online</span></b>
                                 <i class="fa-brands fa-facebook-messenger"></i>
                             </li>
                         </ul>
