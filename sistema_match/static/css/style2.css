@@ -86,6 +86,7 @@ header{
     width: 400%;
     position: relative;
 }
+
 .iconBox1{
     width: 25%;
     display: flex;
@@ -121,6 +122,7 @@ header{
     color: #1877f2;
 }
 
+
 .iconBox1 i,
 .iconBox2 i{
     font-size: 20px;
@@ -132,8 +134,8 @@ header{
 }
 .iconBox1 i:hover,
 .iconBox2 i:hover{
-    background: #1877f2;
-    color: #d1deec;
+    background: #d81c1c;
+    color: #0070e7;
     cursor: pointer;
 }
 .iconBox2 label{
@@ -843,6 +845,24 @@ header{
     color: var(--black);
     cursor: pointer;
 }
+#dropdown {
+  background-color: #f1f1f1;
+  color: #333;
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Valor do border-radius para deixar as bordas arredondadas */
+}
 
+#dropdown option i {
+  margin-right: 5px;
+  color: #999;
+}
 
+#dropdown option:checked {
+  background-color: #007bff;
+  color: #fff;
+}
+
+      
 /* home right end */

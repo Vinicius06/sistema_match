@@ -22,41 +22,41 @@
 <!-- header section start -->
 
     
-<header>
-    <div class="header-container">
-        <div class="header-wrapper">
-            <div class="logoBox">
-                <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
-            </div>
-            <div class="searchBox">
-                <form method="GET" action="{% url 'search_profiles' %}">
-                    <input type="search" name="query" placeholder="Pesquisar perfis">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-            <div class="iconBox1">
-                <i class="fa-solid fa-house"></i>
-                <i class="fa-solid fa-user-group"></i>
-            </div>
-            <div class="iconBox2">
-                <i class="fa-solid fa-circle-plus"></i>
-                <i class="fa-brands fa-facebook-messenger"></i>
-                <i class="fa-solid fa-bell"></i>
-                <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
-                <select id="dropdown" onchange="redirectToPage(this)">
-                    <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
-                    <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
-                    <option value="configuracoes">Configurações</option>
-                    <option value="logout">Logout</option>
-                </select>
+    <header>
+        <div class="header-container">
+            <div class="header-wrapper">
+                <div class="logoBox">
+                    <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                </div>
+                <div class="searchBox">
+                    <input type="search">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="iconBox1">
+                    <i class="fa-solid fa-house"></i>
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+                <div class="iconBox2">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                    <i class="fa-solid fa-bell"></i>
+                    <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
+                    <select id="dropdown" onchange="redirectToPage(this)">
+                        <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
+                        <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
+                        <option value="configuracoes">Configurações</option>
+                        <option value="logout">Logout</option>
+                    </select>
             </div>
         </div>
-    </div>
-</header>
-
+        
+    </header>
     
 <!-- header section end -->
 <!-- home section start -->
+
+
+
 
   
 <div class="home">
@@ -67,7 +67,7 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <<img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                    <img src="{% static 'images/gabigol.png' %}" alt="user">
                         <h3>{{user.username}}</h3>
                 </div>
                
@@ -137,43 +137,24 @@
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">Tempo Linha</li>
+                                    <li class="active">Usuários Encontrados</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
-                                <div class="post-title">
-                                    <img src="{% static 'images/jovemfla.png' %}" alt="group01"><h1> Jovem Fla </h1>
-                                    <ul>
-                                        <img src="{% static 'images/Jaoboy.png' %}" alt="user">
-                                        <li><h4>Jaoboy <span> . 2 horas atrás</span></h4></li>
-                                        <li><span>26 de junho às 14:23 PM</span></li>
-                                    </ul>
-                                    <p>Sempre que eu vejo eu não vejo tô vendo agora que vocês tão mostrando:
-                                        <a href="https://www.youtube.com/watch?v=YQ1ihQNjpik">Clique e seja feliz!</a>
-                                    </p>
-                                </div>
+                                {% if query %}
+                                    <h2>Resultados da busca para "{{ query }}"</h2>
+                                    {% if profiles %}
+                                        <ul>
+                                        {% for profile in profiles %}
+                                            <li>{{ profile.username }}</li>
+                                            <!-- Exibir outros detalhes do perfil, se necessário -->
+                                        {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>Nenhum perfil encontrado.</p>
+                                    {% endif %}
+                                    {% endif %}
 
-                                <div class="post-images">
-                                    <div class="post-images1">
-                                        <img src="{% static 'images/Jaoboy.png' %}" alt="post images 01">
-                                        <img src="{% static 'images/taças.png' %}" alt="post images 02">
-                                        <img src="{% static 'images/taças.png' %}" alt="post images 03">
-                                    </div>
-                                    <div class="post-images2">
-                                        <img src="{% static 'images/taças.png' %}" alt="post images 04">
-                                    </div>
-                                </div>
-
-                                <div class="like-comment">
-                                    <ul>
-                                        <li>
-                                            <img src="{% static 'images/love.png' %}" alt="love">
-                                            <img src="{% static 'images/like.png' %}" alt="like">
-                                            <span>69 reações</span>
-                                        </li>
-                                        <li><i class="fa-regular fa-comment-dots"></i> <span>5 comentários</span></li>
-                                    </ul>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -293,6 +274,7 @@
         }
     }
 
+    
 </script>
 
 </body>
