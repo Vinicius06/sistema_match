@@ -4,10 +4,10 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, User, Preferencias
+from .models import UserProfile, User, Preferencias, Preferencias2
 from django.views.generic import CreateView
 from django.contrib.auth import logout
-from .forms import UserProfileForm, UploadForm, SearchForm, PhraseForm, PreferenciasFilmesForm, AdicionarFilmeForm
+from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivrosForm
 from itertools import chain
 import random
 # View responsável pelo cadastro de usuários
@@ -113,8 +113,12 @@ def filmes(request):
     return render(request, 'filmes.html', context)
 @login_required(login_url="/login/")
 def livros(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    context = {'user_profile': user_profile}
+    user_profile = request.user.userprofile
+    livros_preferidos = user_profile.livros_preferidos.all()
+    context = {
+        'user_profile': user_profile,
+        'livros_preferidos': livros_preferidos
+    }
     return render(request, 'livros.html', context)
 
 @login_required(login_url="/login/")
@@ -180,11 +184,11 @@ def perfil_usuario(request):
     if request.method == 'POST':
         form = AdicionarFilmeForm(request.POST)
         if form.is_valid():
-            titulo = form.cleaned_data['titulo']
+            filme = form.cleaned_data['filme']
 
 
             # Crie um novo objeto de filme preferido
-            filme_preferido = Preferencias(filme=titulo)
+            filme_preferido = Preferencias(filme=filme)
             filme_preferido.save()
 
             # Adicione o filme preferido ao perfil do usuário
@@ -212,3 +216,43 @@ def deletar_filme(request, filme_id):
     user_profile.save()
 
     return redirect('filmes')  # Redirecionar para a página de filmes após deletar o filme
+
+@login_required(login_url="/login/")
+def perfil_usuario2(request):
+    user_profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = AdicionarLivrosForm(request.POST)
+        if form.is_valid():
+            livro = form.cleaned_data['livro']
+
+
+            # Crie um novo objeto de filme preferido
+            livro_preferido = Preferencias2(livro=livro)
+            livro_preferido.save()
+
+            # Adicione o filme preferido ao perfil do usuário
+            user_profile.livros_preferidos.add(livro_preferido)
+            user_profile.save()
+
+            return redirect('livros')  # Redirecionar para a página de filmes após adicionar o filme preferido
+    else:
+        form = AdicionarLivrosForm()
+
+    return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
+
+@login_required(login_url="/login/")
+def deletar_livro(request, livro_id):
+    user_profile = request.user.userprofile
+
+    # Verificar se o filme existe no perfil do usuário
+    try:
+        livro_preferido = user_profile.livros_preferidos.get(id=livro_id)
+    except Preferencias2.DoesNotExist:
+        return HttpResponse('Livro não encontrado.')
+
+    # Remover o filme do perfil do usuário
+    user_profile.livros_preferidos.remove(livro_preferido)
+    user_profile.save()
+
+    return redirect('livros')  # Redirecionar para a página de filmes após deletar o filme

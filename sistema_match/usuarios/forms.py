@@ -29,5 +29,15 @@ class PreferenciasFilmesForm(forms.ModelForm):
         }
 
 class AdicionarFilmeForm(forms.Form):
-    titulo = forms.CharField(max_length=100)
+    filme = forms.CharField(max_length=100)
 
+class PreferenciasLivrosForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['livros_preferidos']
+        widgets = {
+            'livros_preferidos': forms.CheckboxSelectMultiple,
+        }
+
+class AdicionarLivrosForm(forms.Form):
+    livro = forms.CharField(max_length=100)

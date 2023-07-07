@@ -20,6 +20,10 @@ urlpatterns = [
     path('upload-image/', views.upload_image, name='upload_image'),
     path('perfil_usuario/', views.perfil_usuario, name='perfil_usuario'),
     path('deletar_filme/<int:filme_id>/', views.deletar_filme, name='deletar_filme'),
+    path('perfil_usuario2/', views.perfil_usuario2, name='perfil_usuario2'),
+    path('deletar_livro/<int:livro_id>/', views.deletar_livro, name='deletar_livro'),
+
+
 
 
 ] 
