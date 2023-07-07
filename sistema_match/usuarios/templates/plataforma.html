@@ -42,7 +42,10 @@
                 <i class="fa-solid fa-circle-plus"></i>
                 <i class="fa-brands fa-facebook-messenger"></i>
                 <i class="fa-solid fa-bell"></i>
-                <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
+                <div class="profile">
+                    <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                        <h3>{{user.username}}</h3>
+                </div>
                 <select id="dropdown" onchange="redirectToPage(this)">
                     <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
                     <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
@@ -67,7 +70,7 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <<img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                    <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
                         <h3>{{user.username}}</h3>
                 </div>
                

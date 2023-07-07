@@ -1,14 +1,15 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile
+from .models import UserProfile, User, Preferencias
 from django.views.generic import CreateView
 from django.contrib.auth import logout
-from .forms import UserProfileForm, UploadForm
-
+from .forms import UserProfileForm, UploadForm, SearchForm, PhraseForm, PreferenciasFilmesForm, AdicionarFilmeForm
+from itertools import chain
+import random
 # View responsável pelo cadastro de usuários
 
 def cadastro(request):
@@ -77,7 +78,9 @@ def search_profiles(request):
  # View da plataforma que requer autenticação       
 @login_required(login_url="/login/")
 def plataforma(request):
-    return render(request, 'plataforma.html')
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {'user_profile': user_profile}
+    return render(request, 'plataforma.html', context)
 
 @login_required(login_url="/login/")
 def logout_view(request):
@@ -86,7 +89,9 @@ def logout_view(request):
 
 @login_required(login_url="/login/")
 def perfil(request):
-    return render(request, 'perfil.html' )
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {'user_profile': user_profile}
+    return render(request, 'perfil.html', context)
 
 @login_required(login_url="/login/")
 def configuracoes(request):
@@ -99,53 +104,111 @@ def my_view(request):
 
 @login_required(login_url="/login/")
 def filmes(request):
-    return render(request, 'filmes.html' )
-
+    user_profile = request.user.userprofile
+    filmes_preferidos = user_profile.filmes_preferidos.all()
+    context = {
+        'user_profile': user_profile,
+        'filmes_preferidos': filmes_preferidos
+    }
+    return render(request, 'filmes.html', context)
 @login_required(login_url="/login/")
 def livros(request):
-    return render(request, 'livros.html' )
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {'user_profile': user_profile}
+    return render(request, 'livros.html', context)
 
 @login_required(login_url="/login/")
 def series(request):
-    return render(request, 'series.html' )
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {'user_profile': user_profile}
+    return render(request, 'series.html', context)
 
 @login_required(login_url="/login/")
 def animacoes(request):
-    return render(request, 'animacoes.html' )
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {'user_profile': user_profile}
+    return render(request, 'animacoes.html', context)
+    
 
-@login_required
-def edit_profile(request):
-    user = request.user
-    profile = user.userprofile
+@login_required(login_url="/login/")
+def search(request):
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        search_query = form.cleaned_data['search_query']
+        # Salve o valor da busca em uma lista ou banco de dados, por exemplo:
+        # SearchHistory.objects.create(search_query=search_query)
+        # Ou adicione o valor à uma lista em sessão:
+        # request.session.setdefault('search_history', []).append(search_query)
+
+        # Realize a lógica de busca com base no search_query
+        results = perform_search(search_query)
+
+        context = {
+            'form': form,
+            'results': results,
+        }
+        return render(request, 'filmes.html', context)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'filmes.html', context)
+
+
+
+@login_required(login_url="/login/")
+def upload_image(request):
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('perfil')
+            return redirect('upload_image')
     else:
-        form = UserProfileForm(instance=profile)
-
-    context = {'form': form}
-    return render(request, 'edit_profile.html', context)
-
-@login_required
-def upload_view(request):
-    if request.method == 'POST':
-        form = UploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.cleaned_data['photo']
-            # Salve a foto ou faça o processamento desejado
-            # por exemplo, user.profile_photo = photo
-            # user.save()
-            return render(request, 'upload_success.html')
-    else:
-        form = UploadForm()
+        form = UserProfileForm(instance=user_profile)
     
-    return render(request, 'plataforma.html', {'form': form})
+    return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
-@login_required
-def change_profile_photo(request):
-    profile_photo_url = '/media/path/to/profile_photo.jpg'  # Substitua pelo caminho correto da imagem carregada
+from django.shortcuts import render
+from .models import UserProfile
 
-    return render(request, 'change_profile_photo.html', {'profile_photo_url': profile_photo_url})
+@login_required(login_url="/login/")
+def perfil_usuario(request):
+    user_profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = AdicionarFilmeForm(request.POST)
+        if form.is_valid():
+            titulo = form.cleaned_data['titulo']
+
+
+            # Crie um novo objeto de filme preferido
+            filme_preferido = Preferencias(filme=titulo)
+            filme_preferido.save()
+
+            # Adicione o filme preferido ao perfil do usuário
+            user_profile.filmes_preferidos.add(filme_preferido)
+            user_profile.save()
+
+            return redirect('filmes')  # Redirecionar para a página de filmes após adicionar o filme preferido
+    else:
+        form = AdicionarFilmeForm()
+
+    return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
+
+@login_required(login_url="/login/")
+def deletar_filme(request, filme_id):
+    user_profile = request.user.userprofile
+
+    # Verificar se o filme existe no perfil do usuário
+    try:
+        filme_preferido = user_profile.filmes_preferidos.get(id=filme_id)
+    except Preferencias.DoesNotExist:
+        return HttpResponse('Filme não encontrado.')
+
+    # Remover o filme do perfil do usuário
+    user_profile.filmes_preferidos.remove(filme_preferido)
+    user_profile.save()
+
+    return redirect('filmes')  # Redirecionar para a página de filmes após deletar o filme

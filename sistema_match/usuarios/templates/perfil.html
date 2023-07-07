@@ -40,8 +40,15 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <i class="fa-brands fa-facebook-messenger"></i>
                     <i class="fa-solid fa-bell"></i>
-                    <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
-                    <select id="dropdown" onchange="redirectToPage(this)">
+                    <div class="profile">
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+                        {% else %}
+                             <p>Sem foto de perfil</p>
+                        {% endif %}
+                        <h3>{{user.username}}</h3>
+                </div>
+                <select id="dropdown" onchange="redirectToPage(this)">
                         <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
                         <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
                         <option value="configuracoes">Configurações</option>
@@ -67,7 +74,11 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <img src="{% static 'images/gabigol.png' %}" alt="user">
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+                        {% else %}
+                             <p>Sem foto de perfil</p>
+                        {% endif %}
                         <h3>{{user.username}}</h3>
                 </div>
                
@@ -141,15 +152,14 @@
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
-                                  <form method="post" enctype="multipart/form-data">
+                                <p>Futuramente será possivel trocar foto</p>
+                                <form method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     {{ form.as_p }}
-                                    <input type="file" name="profile_image" id="file-input" accept="image/*">
-                                    <label for="file-input">Selecionar Foto</label>
-                                    <span class="file-name"></span>
-                                    <button type="submit">Trocar Foto de Perfil</button>
-                                  </form>
-                                  
+                                    <button type="submit">Upload</button>
+                                </form>
+                                <a href="upload_image.html">clique aqui</a>
+                                </form>
                                   
                             </div>
                         </div>
@@ -271,16 +281,6 @@
     }
 
     
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js">
-    $(document).ready(function() {
-        $('#file-input').change(function() {
-          var fileName = $(this).val().split('\\').pop();
-          $('.file-name').text(fileName);
-        });
-      });
-      
 </script>
 
 

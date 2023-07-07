@@ -14,6 +14,7 @@
     <!-- fontawesome css link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        
 
 
 </head>
@@ -40,7 +41,10 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <i class="fa-brands fa-facebook-messenger"></i>
                     <i class="fa-solid fa-bell"></i>
-                    <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
+                    <div class="profile">
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                            <h3>{{user.username}}</h3>
+                    </div>
                     <select id="dropdown" onchange="redirectToPage(this)">
                         <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
                         <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
@@ -67,7 +71,7 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <img src="{% static 'images/gabigol.png' %}" alt="user">
+                    <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
                         <h3>{{user.username}}</h3>
                 </div>
                
@@ -137,30 +141,29 @@
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">Tempo Linha</li>
+                                    <li class="active">Estes são seus filmes favoritos</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                            </div>
+
+                               <p>Deseja adicionar mais?</p>
+                               
+                              
+
+                               <h1>Filmes Preferidos</h1>
+                                    {% if filmes_preferidos %}
+                                    <ul>
+                                        {% for filme in filmes_preferidos %}
+                                        <li>
+                                            {{ filme.filme }}
+                                            <a href="{% url 'deletar_filme' filme.id %}">Deletar</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                    <p>Nenhum filme preferido encontrado.</p>
+                                    {% endif %}
+                            </div>                        
                         </div>
                     </div>
 
@@ -278,9 +281,17 @@
             window.location.href = "{% url 'plataforma' %}";
         }
     }
+    
+    function openNewWindow() {
 
+        const button = document.querySelector("button")
+        const modal = document.querySelector("dialog")
+        button.onclick = function () {
+            modal.show() 
+        }
+    }
     
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
