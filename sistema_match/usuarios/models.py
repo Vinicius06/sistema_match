@@ -9,7 +9,7 @@ class Preferencias_filme(models.Model):
     filme = models.CharField(max_length=100)
 
 class Preferencias_livro(models.Model):
-    livro = models.CharField(max_length=100)    
+    livro = models.CharField(max_length=100)
 
 class Preferencias_serie(models.Model):
     serie = models.CharField(max_length=100)    

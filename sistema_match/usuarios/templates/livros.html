@@ -29,8 +29,10 @@
                     <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
                 </div>
                 <div class="searchBox">
-                    <input type="search">
-                    <i class="fas fa-search"></i>
+                    <form method="GET" action="{% url 'search_profiles' %}">
+                        <input type="search" name="query" placeholder="Pesquisar perfis">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
                 </div>
                 <div class="iconBox1">
                     <i class="fa-solid fa-house"></i>
@@ -273,7 +275,7 @@
         var selectedValue = selectElement.value;
 
         if (selectedValue === "meu_perfil") {
-            window.location.href = "{% url 'perfil' %}";
+            window.location.href = "{% url 'profile_usuario' %}";
         } else if (selectedValue === "configuracoes") {
             window.location.href = "{% url 'configuracoes' %}";
         } else if (selectedValue === "logout") {

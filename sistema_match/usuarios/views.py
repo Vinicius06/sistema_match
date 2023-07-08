@@ -94,6 +94,24 @@ def perfil(request):
     return render(request, 'perfil.html', context)
 
 @login_required(login_url="/login/")
+def profile_usuario(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    filmes_preferidos = user_profile.filmes_preferidos.all()
+    livros_preferidos = user_profile.livros_preferidos.all()
+    series_preferidos = user_profile.series_preferidos.all()
+    animacoes_preferidos = user_profile.animacoes_preferidos.all()
+
+    context = {
+        'user_profile': user_profile,
+        'filmes_preferidos': filmes_preferidos,
+        'livros_preferidos': livros_preferidos,
+        'series_preferidos': series_preferidos,
+        'animacoes_preferidos': animacoes_preferidos,
+        
+    }
+    return render(request, 'profile_usuario.html', context)
+
+@login_required(login_url="/login/")
 def configuracoes(request):
     return render(request, 'configuracoes.html' )
 
@@ -123,14 +141,22 @@ def livros(request):
 
 @login_required(login_url="/login/")
 def series(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    context = {'user_profile': user_profile}
+    user_profile = request.user.userprofile
+    series_preferidos = user_profile.series_preferidos.all()
+    context = {
+        'user_profile': user_profile,
+        'series_preferidos': series_preferidos
+    }
     return render(request, 'series.html', context)
 
 @login_required(login_url="/login/")
 def animacoes(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    context = {'user_profile': user_profile}
+    user_profile = request.user.userprofile
+    animacoes_preferidos = user_profile.animacoes_preferidos.all()
+    context = {
+        'user_profile': user_profile,
+        'animacoes_preferidos': animacoes_preferidos
+    }
     return render(request, 'animacoes.html', context)
     
 
@@ -249,7 +275,7 @@ def deletar_livro(request, livro_id):
     try:
         livro_preferido = user_profile.livros_preferidos.get(id=livro_id)
     except Preferencias_livro.DoesNotExist:
-        return HttpResponse('Livro não encontrado.')
+        return HttpResponse('livro não encontrado.')
 
     # Remover o filme do perfil do usuário
     user_profile.livros_preferidos.remove(livro_preferido)
@@ -297,6 +323,7 @@ def deletar_serie(request, serie_id):
 
     return redirect('series')  # Redirecionar para a página de filmes após deletar o filme
 
+@login_required(login_url="/login/")
 def animacao_usuario(request):
     user_profile = request.user.userprofile
 
@@ -326,12 +353,15 @@ def deletar_animacao(request, animacao_id):
 
     # Verificar se o filme existe no perfil do usuário
     try:
-        animacao_preferido = user_profile.animcoes_preferidos.get(id=animacao_id)
+        animacao_preferido = user_profile.animacoes_preferidos.get(id=animacao_id)
     except Preferencias_animacao.DoesNotExist:
-        return HttpResponse('Animacao não encontrado.')
+        return HttpResponse('animacao não encontrado.')
 
     # Remover o filme do perfil do usuário
     user_profile.animacoes_preferidos.remove(animacao_preferido)
     user_profile.save()
 
     return redirect('animacoes')  # Redirecionar para a página de filmes após deletar o filme
+
+def teste(request):
+    return render(request, 'teste.html' )

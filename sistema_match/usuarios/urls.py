@@ -26,7 +26,8 @@ urlpatterns = [
     path('deletar_serie/<int:serie_id>/', views.deletar_serie, name='deletar_serie'),
     path('animacao_usuario/', views.animacao_usuario, name='animacao_usuario'),
     path('deletar_animacao/<int:animacao_id>/', views.deletar_animacao, name='deletar_animacao'),
-
+    path('profile_usurio/', views.profile_usuario, name='profile_usuario'),
+    path('teste/', views.teste, name='teste'),
 
 
 
