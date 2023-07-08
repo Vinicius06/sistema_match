@@ -14,6 +14,7 @@
     <!-- fontawesome css link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        
 
 
 </head>
@@ -78,22 +79,23 @@
                     <h4 class="mini-headign">Preferências</h4>
                     <label>
                         <img src="{% static 'images/filmes.png' %}" alt="filmes">
-                        <span>FILMES</span>
+                        <a href="{% url 'filmes' %}">Filmes</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/series.png' %}" alt="series">
-                        <span>Séries</span>
+                        <a href="{% url 'series' %}">Séries</a>
+
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/livros.png' %}" alt="livros">
-                        <span>Livros</span>
+                        <a href="{% url 'livros' %}">Livros</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
-                        <span>Animações</span>
+                        <a href="{% url 'animacoes' %}">Animações</a>
                     </label>
                     <br>
                     <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
@@ -139,33 +141,35 @@
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">Tempo Linha</li>
+                                    <li class="active">Estes são suas Animações favoritas</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                                <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                            </div>
-                        </div>
-                    </div>
 
+                               <h1>Animações Preferidas</h1>
+                                    {% if animacoes_preferidos %}
+                                    <ul>
+                                        {% for animacao in animacoes_preferidos %}
+                                        <li>
+                                            {{ animacao.animacao }}
+                                            <a href="{% url 'deletar_animacao' animacao.id %}">Deletar</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                    <p>Nenhuma Animação preferida encontrada.</p>
+                                    {% endif %}
+
+                                    <br>
+                                    <p>Deseja adicionar mais?</p>
+                               
+                                    <a href="{% url 'animacao_usuario' %}"><button>Sim</button></a>
+                            </div>
+                                                    
+                        </div>
+                        
+                    </div>
+                        
                 </div> <!-- home center wrapper end -->
             </div> <!-- home center end -->
 
@@ -280,9 +284,17 @@
             window.location.href = "{% url 'plataforma' %}";
         }
     }
+    
+    function openNewWindow() {
 
+        const button = document.querySelector("button")
+        const modal = document.querySelector("dialog")
+        button.onclick = function () {
+            modal.show() 
+        }
+    }
     
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

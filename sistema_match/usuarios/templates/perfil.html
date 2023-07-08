@@ -86,23 +86,23 @@
                     <h4 class="mini-headign">Preferências</h4>
                     <label>
                         <img src="{% static 'images/filmes.png' %}" alt="filmes">
-                        <a href="filmes">Filmes</a>
+                        <a href="{% url 'filmes' %}">Filmes</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/series.png' %}" alt="series">
-                        <a href="series">Séries</a>
+                        <a href="{% url 'series' %}">Séries</a>
 
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/livros.png' %}" alt="livros">
-                        <a href="livros">Livros</a>
+                        <a href="{% url 'livros' %}">Livros</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
-                        <a href="animacoes">Animações</a>
+                        <a href="{% url 'animacoes' %}">Animações</a>
                     </label>
                     <br>
                     <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
@@ -148,18 +148,17 @@
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">Troca de Foto de Perfil</li>
+                                    <li class="active">Adicionar Preferência</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
-                                <p>Futuramente será possivel trocar foto</p>
+                                <p>Adicione aqui sua Preferência</p>
                                 <form method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     {{ form.as_p }}
                                     <button type="submit">Upload</button>
                                 </form>
-                                <a href="upload_image.html">clique aqui</a>
-                                </form>
+                                
                                   
                             </div>
                         </div>

@@ -4,10 +4,10 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, User, Preferencias, Preferencias2
+from .models import UserProfile, User, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie
 from django.views.generic import CreateView
 from django.contrib.auth import logout
-from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivrosForm
+from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivroForm, AdicionarAnimacaoForm, AdicionarSerieForm
 from itertools import chain
 import random
 # View responsável pelo cadastro de usuários
@@ -178,7 +178,7 @@ from django.shortcuts import render
 from .models import UserProfile
 
 @login_required(login_url="/login/")
-def perfil_usuario(request):
+def filme_usuario(request):
     user_profile = request.user.userprofile
 
     if request.method == 'POST':
@@ -188,7 +188,7 @@ def perfil_usuario(request):
 
 
             # Crie um novo objeto de filme preferido
-            filme_preferido = Preferencias(filme=filme)
+            filme_preferido = Preferencias_filme(filme=filme)
             filme_preferido.save()
 
             # Adicione o filme preferido ao perfil do usuário
@@ -208,7 +208,7 @@ def deletar_filme(request, filme_id):
     # Verificar se o filme existe no perfil do usuário
     try:
         filme_preferido = user_profile.filmes_preferidos.get(id=filme_id)
-    except Preferencias.DoesNotExist:
+    except Preferencias_filme.DoesNotExist:
         return HttpResponse('Filme não encontrado.')
 
     # Remover o filme do perfil do usuário
@@ -218,17 +218,17 @@ def deletar_filme(request, filme_id):
     return redirect('filmes')  # Redirecionar para a página de filmes após deletar o filme
 
 @login_required(login_url="/login/")
-def perfil_usuario2(request):
+def livro_usuario(request):
     user_profile = request.user.userprofile
 
     if request.method == 'POST':
-        form = AdicionarLivrosForm(request.POST)
+        form = AdicionarLivroForm(request.POST)
         if form.is_valid():
             livro = form.cleaned_data['livro']
 
 
             # Crie um novo objeto de filme preferido
-            livro_preferido = Preferencias2(livro=livro)
+            livro_preferido = Preferencias_livro(livro=livro)
             livro_preferido.save()
 
             # Adicione o filme preferido ao perfil do usuário
@@ -237,7 +237,7 @@ def perfil_usuario2(request):
 
             return redirect('livros')  # Redirecionar para a página de filmes após adicionar o filme preferido
     else:
-        form = AdicionarLivrosForm()
+        form = AdicionarLivroForm()
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
@@ -248,7 +248,7 @@ def deletar_livro(request, livro_id):
     # Verificar se o filme existe no perfil do usuário
     try:
         livro_preferido = user_profile.livros_preferidos.get(id=livro_id)
-    except Preferencias2.DoesNotExist:
+    except Preferencias_livro.DoesNotExist:
         return HttpResponse('Livro não encontrado.')
 
     # Remover o filme do perfil do usuário
@@ -256,3 +256,82 @@ def deletar_livro(request, livro_id):
     user_profile.save()
 
     return redirect('livros')  # Redirecionar para a página de filmes após deletar o filme
+
+@login_required(login_url="/login/")
+def serie_usuario(request):
+    user_profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = AdicionarSerieForm(request.POST)
+        if form.is_valid():
+            serie = form.cleaned_data['serie']
+
+
+            # Crie um novo objeto de filme preferido
+            serie_preferido = Preferencias_serie(serie=serie)
+            serie_preferido.save()
+
+            # Adicione o filme preferido ao perfil do usuário
+            user_profile.series_preferidos.add(serie_preferido)
+            user_profile.save()
+
+            return redirect('series')  # Redirecionar para a página de filmes após adicionar o filme preferido
+    else:
+        form = AdicionarSerieForm()
+
+    return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
+
+@login_required(login_url="/login/")
+def deletar_serie(request, serie_id):
+    user_profile = request.user.userprofile
+
+    # Verificar se o filme existe no perfil do usuário
+    try:
+        serie_preferido = user_profile.series_preferidos.get(id=serie_id)
+    except Preferencias_serie.DoesNotExist:
+        return HttpResponse('Serie não encontrada.')
+
+    # Remover o filme do perfil do usuário
+    user_profile.series_preferidos.remove(serie_preferido)
+    user_profile.save()
+
+    return redirect('series')  # Redirecionar para a página de filmes após deletar o filme
+
+def animacao_usuario(request):
+    user_profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = AdicionarAnimacaoForm(request.POST)
+        if form.is_valid():
+            animacao = form.cleaned_data['animacao']
+
+
+            # Crie um novo objeto de filme preferido
+            animacao_preferido = Preferencias_animacao(animacao=animacao)
+            animacao_preferido.save()
+
+            # Adicione o filme preferido ao perfil do usuário
+            user_profile.animacoes_preferidos.add(animacao_preferido)
+            user_profile.save()
+
+            return redirect('animacoes')  # Redirecionar para a página de filmes após adicionar o filme preferido
+    else:
+        form = AdicionarAnimacaoForm()
+
+    return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
+
+@login_required(login_url="/login/")
+def deletar_animacao(request, animacao_id):
+    user_profile = request.user.userprofile
+
+    # Verificar se o filme existe no perfil do usuário
+    try:
+        animacao_preferido = user_profile.animcoes_preferidos.get(id=animacao_id)
+    except Preferencias_animacao.DoesNotExist:
+        return HttpResponse('Animacao não encontrado.')
+
+    # Remover o filme do perfil do usuário
+    user_profile.animacoes_preferidos.remove(animacao_preferido)
+    user_profile.save()
+
+    return redirect('animacoes')  # Redirecionar para a página de filmes após deletar o filme

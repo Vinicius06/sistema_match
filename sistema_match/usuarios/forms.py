@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile, Preferencias
+from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -39,5 +39,27 @@ class PreferenciasLivrosForm(forms.ModelForm):
             'livros_preferidos': forms.CheckboxSelectMultiple,
         }
 
-class AdicionarLivrosForm(forms.Form):
+class AdicionarLivroForm(forms.Form):
     livro = forms.CharField(max_length=100)
+
+class PreferenciasSeriesForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['series_preferidos']
+        widgets = {
+            'series_preferidos': forms.CheckboxSelectMultiple,
+        }
+
+class AdicionarSerieForm(forms.Form):
+    serie = forms.CharField(max_length=100)
+
+class PreferenciasAnimacoesForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['animacoes_preferidos']
+        widgets = {
+            'animacoes_preferidos': forms.CheckboxSelectMultiple,
+        }
+
+class AdicionarAnimacaoForm(forms.Form):
+    animacao = forms.CharField(max_length=100)
