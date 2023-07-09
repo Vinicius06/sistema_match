@@ -1,53 +1,53 @@
-{% for user_profile in matching_users %}
-    <div>
-        <h2>{{ user_profile.user.username }}</h2>
-        {% if user_profile.profile_image %}
-            {% if forloop.first %}
+{% if matching_users %}
+    {% for user_profile in matching_users %}
+        <div>
+            <h2>{{ user_profile.user.username }}</h2>
+            {% if user_profile.profile_image %}
                 <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+            {% else %}
+                <p>Sem foto de perfil</p>
             {% endif %}
-        {% else %}
-            <p>Sem foto de perfil</p>
-        {% endif %}
 
-        <!-- Exibir as preferências que deram match -->
-        {% if user_profile.filmes_preferidos.all %}
-            <h3>Filmes:</h3>
-            <ul>
-                {% for filme in user_profile.filmes_preferidos.all %}
-                    <li>{{ filme.filme }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        
-        {% if user_profile.livros_preferidos.all %}
-            <h3>Livros:</h3>
-            <ul>
-                {% for livro in user_profile.livros_preferidos.all %}
-                    <li>{{ livro.livro }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        
-        {% if user_profile.series_preferidos.all %}
-            <h3>Séries:</h3>
-            <ul>
-                {% for serie in user_profile.series_preferidos.all %}
-                    <li>{{ serie.serie }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        
-        {% if user_profile.animacoes_preferidos.all %}
-            <h3>Animações:</h3>
-            <ul>
-                {% for animacao in user_profile.animacoes_preferidos.all %}
-                    <li>{{ animacao.animacao }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
-        <hr>
-    </div>
-{% empty %}
+            <!-- Exibir as preferências que deram match -->
+            {% if user_profile.filmes_preferidos.all %}
+                <h3>Filmes:</h3>
+                <ul>
+                    {% for filme in user_profile.filmes_preferidos.all %}
+                        <li>{{ filme.filme }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if user_profile.livros_preferidos.all %}
+                <h3>Livros:</h3>
+                <ul>
+                    {% for livro in user_profile.livros_preferidos.all %}
+                        <li>{{ livro.livro }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if user_profile.series_preferidos.all %}
+                <h3>Séries:</h3>
+                <ul>
+                    {% for serie in user_profile.series_preferidos.all %}
+                        <li>{{ serie.serie }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if user_profile.animacoes_preferidos.all %}
+                <h3>Animações:</h3>
+                <ul>
+                    {% for animacao in user_profile.animacoes_preferidos.all %}
+                        <li>{{ animacao.animacao }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <hr>
+        </div>
+    {% endfor %}
+{% else %}
     <p>Nenhum match encontrado.</p>
-{% endfor %}
+{% endif %}

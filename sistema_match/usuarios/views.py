@@ -412,11 +412,12 @@ def buscar_matches(request):
         Q(livros_preferidos__livro__in=preferencias_livro) |
         Q(series_preferidos__serie__in=preferencias_serie) |
         Q(animacoes_preferidos__animacao__in=preferencias_animacao)
-    )
+    ).distinct()
 
     context = {
         'matching_users': matching_users,
     }
+    
     return render(request, 'matches.html', context)
 
 @login_required(login_url='/login/')
