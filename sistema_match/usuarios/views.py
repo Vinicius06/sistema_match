@@ -15,6 +15,9 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 # View responsável pelo cadastro de usuários
 
+def teste(request):
+    return render(request, 'teste.html' )
+
 def cadastro(request):
     if request.method == "GET":
         return render(request, 'cadastro.html')
@@ -85,6 +88,7 @@ def perfil(request):
 @login_required(login_url="/login/")
 def profile_usuario(request):
     user_profile = UserProfile.objects.get(user=request.user)
+    amigos = user_profile.amigos.all()
     filmes_preferidos = user_profile.filmes_preferidos.all()
     livros_preferidos = user_profile.livros_preferidos.all()
     series_preferidos = user_profile.series_preferidos.all()
@@ -96,7 +100,7 @@ def profile_usuario(request):
         'livros_preferidos': livros_preferidos,
         'series_preferidos': series_preferidos,
         'animacoes_preferidos': animacoes_preferidos,
-        
+        'amigos': amigos,
     }
     return render(request, 'profile_usuario.html', context)
 
@@ -358,17 +362,17 @@ def outros_perfis(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user_profile = get_object_or_404(UserProfile, user=user)
     user_preferences = get_object_or_404(UserPreferences, user=user)
+    adicionar_amigo_form = AdicionarAmigoForm(user=request.user)
 
     if request.method == 'POST':
         form = OutrosPerfisForm(request.POST)
         adicionar_amigo_form = AdicionarAmigoForm(request.POST, user=request.user)
 
-        if form.is_valid() and adicionar_amigo_form.is_valid():
+        if adicionar_amigo_form.is_valid():
             adicionar_amigo_form.save()
-            return redirect('perfil')
+            return redirect('plataforma')
     else:
-        form = OutrosPerfisForm()
-        adicionar_amigo_form = AdicionarAmigoForm(user=request.user)
+        form = OutrosPerfisForm(initial={'amigo_id': user.id})
 
     context = {
         'user_profile': user_profile,
@@ -420,17 +424,17 @@ def adicionar_amizade(request, user_id):
 
     # Verifica se o usuário de destino não é o próprio usuário logado
     if usuario_destino == request.user:
-        return redirect('perfil')
+        return redirect('profile_usuario')
 
     # Verifica se a amizade já existe
-    if Amizade.objects.filter(usuario_origem=request.user, usuario_destino=usuario_destino).exists():
-        return redirect('perfil')   
+    if request.user.userprofile.amigos.filter(id=usuario_destino.id).exists():
+        return redirect('profile_usuario')
 
     # Cria uma nova amizade
     amizade = Amizade(usuario_origem=request.user, usuario_destino=usuario_destino)
     amizade.save()
 
-    return redirect('perfil')
+    # Adiciona o amigo ao perfil do usuário logado
+    request.user.userprofile.amigos.add(usuario_destino)
 
-def teste(request):
-    return render(request, 'teste.html' )
+    return redirect('profile_usuario')

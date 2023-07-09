@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie
+from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -65,9 +65,11 @@ class AdicionarAnimacaoForm(forms.Form):
     animacao = forms.CharField(max_length=100)
 
 class AdicionarAmigoForm(forms.Form):
+    amigo_id = forms.IntegerField(widget=forms.HiddenInput())
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
-        super(AdicionarAmigoForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -84,14 +86,14 @@ class AdicionarAmigoForm(forms.Form):
         amigo = get_user_model().objects.filter(id=amigo_id).first()
 
         if amigo:
-            self.user.userprofile.amigos.add(amigo)
-            self.user.userprofile.save()
+            amizade, created = Amizade.objects.get_or_create(
+                usuario_origem=self.user,
+                usuario_destino=amigo
+            )
 
 class OutrosPerfisForm(forms.ModelForm):
+    amigo_id = forms.IntegerField(widget=forms.HiddenInput())
+
     class Meta:
         model = UserProfile
         fields = []
-
-    def __init__(self, *args, **kwargs):
-        super(OutrosPerfisForm, self).__init__(*args, **kwargs)
-        self.fields['amigo_id'] = forms.IntegerField(widget=forms.HiddenInput())

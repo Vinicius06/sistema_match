@@ -20,6 +20,7 @@ class Preferencias_animacao(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    amigos = models.ManyToManyField(User, related_name='amigos+')
     profile_image = models.ImageField(upload_to='profile_images/')
     filmes_preferidos = models.ManyToManyField(Preferencias_filme)
     livros_preferidos = models.ManyToManyField(Preferencias_livro)

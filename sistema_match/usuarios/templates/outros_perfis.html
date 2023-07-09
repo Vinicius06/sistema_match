@@ -168,19 +168,12 @@
                                             {% else %}
                                                 <p>Sem foto de perfil</p>
                                             {% endif %}
-                                            {% if user_profile %}
-                                                {% if user != request.user %}
-                                                    <form method="POST" action="{% url 'adicionar_amizade' user_id=user.id %}">
-                                                        {% csrf_token %}
-                                                        {{ adicionar_amigo_form.as_p }}
-                                                        <button type="submit">Adicionar amigo</button>
-                                                    </form>
-                                                    {% if user in user_profile.amigos.all %}
-                                                        <p>Já é seu amigo</p>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endif %}
-                                                                                    
+                                            
+                                            <form method="POST" action="{% url 'adicionar_amizade' user_id=user_profile.user_id %}">
+                                                {% csrf_token %}
+                                                <button type="submit">Adicionar Amigo</button>
+                                              </form>
+
                                             <h3>Filmes Preferidos</h3>
                                             {% if user_profile.filmes_preferidos.all %}
                                                 <ul>
