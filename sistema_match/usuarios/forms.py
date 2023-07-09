@@ -63,3 +63,35 @@ class PreferenciasAnimacoesForm(forms.ModelForm):
 
 class AdicionarAnimacaoForm(forms.Form):
     animacao = forms.CharField(max_length=100)
+
+class AdicionarAmigoForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(AdicionarAmigoForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.user is None:
+            raise forms.ValidationError('O usuário não está definido.')
+
+        return cleaned_data
+
+    def save(self):
+        if self.user is None:
+            return None
+
+        amigo_id = self.cleaned_data.get('amigo_id')
+        amigo = get_user_model().objects.filter(id=amigo_id).first()
+
+        if amigo:
+            self.user.userprofile.amigos.add(amigo)
+            self.user.userprofile.save()
+
+class OutrosPerfisForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = []
+
+    def __init__(self, *args, **kwargs):
+        super(OutrosPerfisForm, self).__init__(*args, **kwargs)
+        self.fields['amigo_id'] = forms.IntegerField(widget=forms.HiddenInput())

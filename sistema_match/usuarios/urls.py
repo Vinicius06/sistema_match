@@ -26,9 +26,13 @@ urlpatterns = [
     path('deletar_serie/<int:serie_id>/', views.deletar_serie, name='deletar_serie'),
     path('animacao_usuario/', views.animacao_usuario, name='animacao_usuario'),
     path('deletar_animacao/<int:animacao_id>/', views.deletar_animacao, name='deletar_animacao'),
-    path('profile_usurio/', views.profile_usuario, name='profile_usuario'),
+    path('profile_usuario/', views.profile_usuario, name='profile_usuario'),
+    path('profile_usuario/<int:user_id>/', views.profile_usuario, name='profile_usuario'),
+    path('outros_perfis/<int:user_id>/', views.outros_perfis, name='outros_perfis'),
+    path('visualizar_perfil/<int:user_id>/', views.visualizar_perfil, name='visualizar_perfil'),
+    path('buscar-matches/', views.buscar_matches, name='buscar_matches'),
+    path('adicionar_amizade/<int:user_id>/', views.adicionar_amizade, name='adicionar_amizade'),
     path('teste/', views.teste, name='teste'),
-
 
 
 ] 

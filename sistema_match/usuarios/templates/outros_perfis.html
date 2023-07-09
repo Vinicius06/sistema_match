@@ -14,7 +14,6 @@
     <!-- fontawesome css link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        
 
 
 </head>
@@ -153,35 +152,87 @@
                         <div class="fb-post1-container">
                             <div class="fb-post1-header">
                                 <ul>
-                                    <li class="active">Estas são suas series favoritas</li>
+                                    <li class="active">Usuários Encontrados</li>
                                 </ul>
                             </div>
                             <div class="fb-p1-main">
+                                <h1>Perfil de Usuário</h1>
 
-                               <h1>Series Preferidas</h1>
-                                    {% if series_preferidos %}
-                                    <ul>
-                                        {% for serie in series_preferidos %}
-                                        <li>
-                                            {{ serie.serie }}
-                                            <a href="{% url 'deletar_serie' serie.id %}">Deletar</a>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
+                                    {% if user_profile %}
+                                        <div>
+                                            <h2>{{ user_profile.user.username }}</h2>
+                                            
+                                            {% if user_profile.profile_image %}
+                                                <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+                                                
+                                            {% else %}
+                                                <p>Sem foto de perfil</p>
+                                            {% endif %}
+                                            {% if user_profile %}
+                                                {% if user != request.user %}
+                                                    <form method="POST" action="{% url 'adicionar_amizade' user_id=user.id %}">
+                                                        {% csrf_token %}
+                                                        {{ adicionar_amigo_form.as_p }}
+                                                        <button type="submit">Adicionar amigo</button>
+                                                    </form>
+                                                    {% if user in user_profile.amigos.all %}
+                                                        <p>Já é seu amigo</p>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                                                                    
+                                            <h3>Filmes Preferidos</h3>
+                                            {% if user_profile.filmes_preferidos.all %}
+                                                <ul>
+                                                    {% for filme in user_profile.filmes_preferidos.all %}
+                                                        <li>{{ filme.filme }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>Nenhum filme preferido encontrado.</p>
+                                            {% endif %}
+
+                                            <h3>Livros Preferidos</h3>
+                                            {% if user_profile.livros_preferidos.all %}
+                                                <ul>
+                                                    {% for livro in user_profile.livros_preferidos.all %}
+                                                        <li>{{ livro.livro }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>Nenhum livro preferido encontrado.</p>
+                                            {% endif %}
+
+                                            <h3>Séries Preferidas</h3>
+                                            {% if user_profile.series_preferidos.all %}
+                                                <ul>
+                                                    {% for serie in user_profile.series_preferidos.all %}
+                                                        <li>{{ serie.serie }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>Nenhuma série preferida encontrada.</p>
+                                            {% endif %}
+
+                                            <h3>Animações Preferidas</h3>
+                                            {% if user_profile.animacoes_preferidos.all %}
+                                                <ul>
+                                                    {% for animacao in user_profile.animacoes_preferidos.all %}
+                                                        <li>{{ animacao.animacao }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <p>Nenhuma animação preferida encontrada.</p>
+                                            {% endif %}
+                                        </div>
                                     {% else %}
-                                    <p>Nenhum serie preferida encontrada.</p>
+                                        <p>Perfil não encontrado.</p>
                                     {% endif %}
 
-                                    <br>
-                                    <p>Deseja adicionar mais?</p>
-                               
-                                    <a href="{% url 'serie_usuario' %}"><button>Sim</button></a>
                             </div>
-                                                    
                         </div>
-                        
                     </div>
-                        
+
                 </div> <!-- home center wrapper end -->
             </div> <!-- home center end -->
 
@@ -296,17 +347,9 @@
             window.location.href = "{% url 'plataforma' %}";
         }
     }
-    
-    function openNewWindow() {
 
-        const button = document.querySelector("button")
-        const modal = document.querySelector("dialog")
-        button.onclick = function () {
-            modal.show() 
-        }
-    }
     
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

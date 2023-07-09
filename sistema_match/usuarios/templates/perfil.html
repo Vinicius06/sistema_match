@@ -28,7 +28,9 @@
         <div class="header-container">
             <div class="header-wrapper">
                 <div class="logoBox">
-                    <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                    <a href="{% url 'plataforma' %}">
+                        <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                    </a>
                 </div>
                 <div class="searchBox">
                     <form method="GET" action="{% url 'search_profiles' %}">

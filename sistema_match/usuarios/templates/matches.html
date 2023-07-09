@@ -1,0 +1,17 @@
+{% for user_profile in matching_users %}
+    <div>
+        <h2>{{ user_profile.user.username }}</h2>
+        {% if user_profile.profile_image %}
+            <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+        {% else %}
+            <p>Sem foto de perfil</p>
+        {% endif %}
+
+        <!-- Exibir outras informações relevantes do perfil -->
+        <!-- ... -->
+
+        <hr>
+    </div>
+{% empty %}
+    <p>Nenhum match encontrado.</p>
+{% endfor %}

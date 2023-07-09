@@ -26,7 +26,9 @@
     <div class="header-container">
         <div class="header-wrapper">
             <div class="logoBox">
-                <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                <a href="{% url 'plataforma' %}">
+                    <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                </a>
             </div>
             <div class="searchBox">
                 <form method="GET" action="{% url 'search_profiles' %}">
@@ -43,9 +45,13 @@
                 <i class="fa-brands fa-facebook-messenger"></i>
                 <i class="fa-solid fa-bell"></i>
                 <div class="profile">
-                    <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
-                        <h3>{{user.username}}</h3>
-                </div>
+                    {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                    {% else %}
+                         <p>Sem foto de perfil</p>
+                    {% endif %}
+                    <h3>{{user.username}}</h3>
+            </div>
                 <select id="dropdown" onchange="redirectToPage(this)">
                     <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
                     <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
@@ -70,9 +76,13 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
-                        <h3>{{user.username}}</h3>
-                </div>
+                    {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                    {% else %}
+                         <p>Sem foto de perfil</p>
+                    {% endif %}
+                    <h3>{{user.username}}</h3>
+            </div>
                
                 <div class="preferencias">
                     <h4 class="mini-headign">Preferências</h4>
@@ -190,23 +200,10 @@
                     <div class="event-friend">
                     
                         <div class="friend">
-                            <h3 class="heading">Pedidos de Amizade <span>ver tudo</span></h3>
-                            <ul>
-                                <li><img src="{% static 'images/cristiano.png' %}" alt="user"></li>
-                                <li>
-                                    <b>Cristiano Ronaldo</b>
-                                    <p>Sou melhor que o Messi</p>
-                                    <button>confirmar</button><button class="friend-remove">remover</button>
-                                </li>
-                            </ul>
-                            <ul>
-                                <li><img src="{% static 'images/messi.png' %}" alt="user"></li>
-                                <li>
-                                    <b>Messi</b>
-                                    <p>Papumpirulito Pão Doce</p>
-                                    <button>confirmar</button><button class="friend-remove">remover</button>
-                                </li>
-                            </ul>
+                            <h3 class="heading">Deseja procurar Matches?</h3>
+                            <form action="{% url 'buscar_matches' %}" method="GET">
+                                <button type="submit">Procurar Matches</button>
+                            </form>
                         </div>
 
                     </div>

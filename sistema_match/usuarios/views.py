@@ -1,15 +1,18 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, User, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie
+from .models import UserProfile, User, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade
 from django.views.generic import CreateView
 from django.contrib.auth import logout
-from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivroForm, AdicionarAnimacaoForm, AdicionarSerieForm
+from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivroForm, AdicionarAnimacaoForm, AdicionarSerieForm, AdicionarAmigoForm, OutrosPerfisForm
 from itertools import chain
 import random
+from django.urls import reverse
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 # View responsável pelo cadastro de usuários
 
 def cadastro(request):
@@ -54,25 +57,11 @@ def login(request):
             return redirect('/plataforma/')
             
         else: 
-            return HttpResponse('Email ou senha invalidos')
+            error_message = 'Email ou senha inválidos.'
+            messages.error(request, error_message)
+            return redirect('login')
         
-def search_profiles(request):
-    if request.method == 'GET':
-        query = request.GET.get('query')  # Obter o termo de pesquisa da query string
-        if query:
-            # Realizar a busca dos perfis de usuário com base no termo de pesquisa
-            profiles = User.objects.filter(username__icontains=query).all()
-        else:
-            profiles = User.objects.none()  # Retorna uma queryset vazia se não houver termo de pesquisa
 
-        context = {
-            'profiles': profiles,
-            'query': query,
-        }
-        return render(request, 'search_profiles.html', context)
-    else:
-        # Método POST não é necessário para a busca de perfis
-        return render(request, 'search_profiles.html')
             
 
  # View da plataforma que requer autenticação       
@@ -110,6 +99,7 @@ def profile_usuario(request):
         
     }
     return render(request, 'profile_usuario.html', context)
+
 
 @login_required(login_url="/login/")
 def configuracoes(request):
@@ -362,6 +352,85 @@ def deletar_animacao(request, animacao_id):
     user_profile.save()
 
     return redirect('animacoes')  # Redirecionar para a página de filmes após deletar o filme
+
+@login_required(login_url="/login/")
+def outros_perfis(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user_profile = get_object_or_404(UserProfile, user=user)
+    user_preferences = get_object_or_404(UserPreferences, user=user)
+
+    if request.method == 'POST':
+        form = OutrosPerfisForm(request.POST)
+        adicionar_amigo_form = AdicionarAmigoForm(request.POST, user=request.user)
+
+        if form.is_valid() and adicionar_amigo_form.is_valid():
+            adicionar_amigo_form.save()
+            return redirect('perfil')
+    else:
+        form = OutrosPerfisForm()
+        adicionar_amigo_form = AdicionarAmigoForm(user=request.user)
+
+    context = {
+        'user_profile': user_profile,
+        'user_preferences': user_preferences,
+        'adicionar_amigo_form': adicionar_amigo_form,
+        'form': form,
+    }
+    return render(request, 'outros_perfis.html', context)
+
+@login_required(login_url="/login/")
+def search_profiles(request):
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        users = User.objects.filter(username__icontains=query)
+        profiles = UserProfile.objects.filter(user__in=users)
+        return render(request, 'search_profiles.html', {'profiles': profiles, 'query': query})
+    return redirect('home')
+
+@login_required(login_url="/login/")
+def visualizar_perfil(request, user_id):
+    user_profile = get_object_or_404(UserProfile, user_id=user_id)
+    return render(request, 'outros_perfis.html', {'user_profile': user_profile})
+
+@login_required(login_url="/login/")
+def buscar_matches(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    filmes_preferidos = user_profile.filmes_preferidos.all()
+    livros_preferidos = user_profile.livros_preferidos.all()
+    series_preferidos = user_profile.series_preferidos.all()
+    animacoes_preferidos = user_profile.animacoes_preferidos.all()
+
+    # Realizar a busca por usuários com as mesmas preferências
+    matching_users = UserProfile.objects.filter(
+        filmes_preferidos__in=filmes_preferidos,
+        livros_preferidos__in=livros_preferidos,
+        series_preferidos__in=series_preferidos,
+        animacoes_preferidos__in=animacoes_preferidos
+    ).exclude(user=request.user)  # Excluir o próprio usuário logado da lista de matches
+
+    context = {
+        'matching_users': matching_users,
+    }
+    return render(request, 'matches.html', context)
+
+
+@login_required(login_url='/login/')
+def adicionar_amizade(request, user_id):
+    usuario_destino = get_object_or_404(User, id=user_id)
+
+    # Verifica se o usuário de destino não é o próprio usuário logado
+    if usuario_destino == request.user:
+        return redirect('perfil')
+
+    # Verifica se a amizade já existe
+    if Amizade.objects.filter(usuario_origem=request.user, usuario_destino=usuario_destino).exists():
+        return redirect('perfil')   
+
+    # Cria uma nova amizade
+    amizade = Amizade(usuario_origem=request.user, usuario_destino=usuario_destino)
+    amizade.save()
+
+    return redirect('perfil')
 
 def teste(request):
     return render(request, 'teste.html' )

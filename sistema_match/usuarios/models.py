@@ -30,4 +30,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Amizade(models.Model):
+    usuario_origem = models.ForeignKey(User, on_delete=models.CASCADE, related_name='amigos_origem')
+    usuario_destino = models.ForeignKey(User, on_delete=models.CASCADE, related_name='amigos_destino')
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.usuario_origem.username} -> {self.usuario_destino.username}'
     

@@ -26,7 +26,9 @@
         <div class="header-container">
             <div class="header-wrapper">
                 <div class="logoBox">
-                    <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                    <a href="{% url 'plataforma' %}">
+                        <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                    </a>
                 </div>
                 <div class="searchBox">
                     <form method="GET" action="{% url 'search_profiles' %}">
@@ -42,7 +44,14 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <i class="fa-brands fa-facebook-messenger"></i>
                     <i class="fa-solid fa-bell"></i>
-                    <label><img src="{% static 'images/gabigol.png' %}" alt="user"></label>
+                    <div class="profile">
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                        {% else %}
+                             <p>Sem foto de perfil</p>
+                        {% endif %}
+                        <h3>{{user.username}}</h3>
+                </div>
                     <select id="dropdown" onchange="redirectToPage(this)">
                         <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
                         <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
@@ -69,31 +78,35 @@
             <div class="home-left">
 
                 <div class="profile">
-                    <img src="{% static 'images/gabigol.png' %}" alt="user">
-                        <h3>{{user.username}}</h3>
-                </div>
+                    {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil">
+                    {% else %}
+                         <p>Sem foto de perfil</p>
+                    {% endif %}
+                    <h3>{{user.username}}</h3>
+            </div>
                
                 <div class="preferencias">
                     <h4 class="mini-headign">Preferências</h4>
                     <label>
                         <img src="{% static 'images/filmes.png' %}" alt="filmes">
-                        <a href="filmes">Filmes</a>
+                        <a href="{% url 'filmes' %}">Filmes</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/series.png' %}" alt="series">
-                        <a href="series">Séries</a>
+                        <a href="{% url 'series' %}">Séries</a>
 
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/livros.png' %}" alt="livros">
-                        <a href="livros">Livros</a>
+                        <a href="{% url 'livros' %}">Livros</a>
                     </label>
                     <br>
                     <label>
                         <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
-                        <a href="animacoes">Animações</a>
+                        <a href="{% url 'animacoes' %}">Animações</a>
                     </label>
                     <br>
                     <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
@@ -148,7 +161,7 @@
                                     {% if profiles %}
                                         <ul>
                                         {% for profile in profiles %}
-                                            <li>{{ profile.username }}</li>
+                                        <li><a href="{% url 'visualizar_perfil' profile.user.id %}">{{ profile.user.username }}</a></li>
                                             <!-- Exibir outros detalhes do perfil, se necessário -->
                                         {% endfor %}
                                         </ul>
@@ -266,7 +279,7 @@
         var selectedValue = selectElement.value;
 
         if (selectedValue === "meu_perfil") {
-            window.location.href = "{% url 'perfil' %}";
+            window.location.href = "{% url 'profile_usuario' %}";
         } else if (selectedValue === "configuracoes") {
             window.location.href = "{% url 'configuracoes' %}";
         } else if (selectedValue === "logout") {

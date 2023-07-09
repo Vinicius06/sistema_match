@@ -1,10 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/perfil.css' %}">
-</head>
-<body>
-    <img src="{% static 'images/gabigol.png' %}" alt="logo" class="foto-perfil">
-</body>
-</html>
+{% if user != request.user %}
+    {% if request.user not in user_profile.amigos.all %}
+        <form method="POST" action="{% url 'adicionar_amizade' user_id=user_profile.user.id %}">
+            {% csrf_token %}
+            <button type="submit">Adicionar amigo</button>
+        </form>
+    {% else %}
+        <p>Já é seu amigo</p>
+    {% endif %}
+{% endif %}
