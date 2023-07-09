@@ -13,6 +13,8 @@ import random
 from django.urls import reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.db.models import Q, Count, Subquery, OuterRef
+
 # View responsável pelo cadastro de usuários
 
 def teste(request):
@@ -396,27 +398,26 @@ def visualizar_perfil(request, user_id):
     user_profile = get_object_or_404(UserProfile, user_id=user_id)
     return render(request, 'outros_perfis.html', {'user_profile': user_profile})
 
+
 @login_required(login_url="/login/")
 def buscar_matches(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    filmes_preferidos = user_profile.filmes_preferidos.all()
-    livros_preferidos = user_profile.livros_preferidos.all()
-    series_preferidos = user_profile.series_preferidos.all()
-    animacoes_preferidos = user_profile.animacoes_preferidos.all()
+    preferencias_filme = user_profile.filmes_preferidos.values('filme')
+    preferencias_livro = user_profile.livros_preferidos.values('livro')
+    preferencias_serie = user_profile.series_preferidos.values('serie')
+    preferencias_animacao = user_profile.animacoes_preferidos.values('animacao')
 
-    # Realizar a busca por usuários com as mesmas preferências
-    matching_users = UserProfile.objects.filter(
-        filmes_preferidos__in=filmes_preferidos,
-        livros_preferidos__in=livros_preferidos,
-        series_preferidos__in=series_preferidos,
-        animacoes_preferidos__in=animacoes_preferidos
-    ).exclude(user=request.user)  # Excluir o próprio usuário logado da lista de matches
+    matching_users = UserProfile.objects.exclude(user=request.user).filter(
+        Q(filmes_preferidos__filme__in=preferencias_filme) |
+        Q(livros_preferidos__livro__in=preferencias_livro) |
+        Q(series_preferidos__serie__in=preferencias_serie) |
+        Q(animacoes_preferidos__animacao__in=preferencias_animacao)
+    )
 
     context = {
         'matching_users': matching_users,
     }
     return render(request, 'matches.html', context)
-
 
 @login_required(login_url='/login/')
 def adicionar_amizade(request, user_id):
@@ -452,3 +453,4 @@ def excluir_amizade(request, amigo_id):
         Amizade.objects.filter(usuario_origem=request.user, usuario_destino=amigo).delete()
 
     return redirect('profile_usuario')
+

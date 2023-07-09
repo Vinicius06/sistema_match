@@ -3,6 +3,7 @@ from .models import UserProfile, Preferencias_filme, Preferencias_livro, Prefere
 from django.contrib.auth import get_user_model
 from django.db import models
 
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
@@ -97,3 +98,4 @@ class OutrosPerfisForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = []
+
