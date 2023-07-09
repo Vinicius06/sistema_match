@@ -232,7 +232,17 @@
                             <input type="search" placeholder="Pesquisar">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
-                        <p>oi</p>
+                        {% for amigo in amigos %}
+                            <li>
+                                {{ amigo.username }}
+                                <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fa-solid fa-times"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
                     </div>
 
                 </div><!-- home right wrapper end -->

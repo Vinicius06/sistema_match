@@ -1,0 +1,13 @@
+.amigo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.amigo-nome {
+    flex-grow: 1;
+}
+
+.amigo-botao {
+    margin-left: 10px;
+}

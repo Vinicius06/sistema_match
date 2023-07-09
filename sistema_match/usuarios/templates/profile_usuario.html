@@ -10,14 +10,17 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <title>matchflix.com</title>
     <!-- style css link -->
+    <link rel="stylesheet" href="{% static 'css/nome.css' %}">
     <link rel="stylesheet" href="{% static 'css/style2.css' %}">
     <link rel="stylesheet" type href="{% static 'css/style2.css' %}">
+    
+
 
     <!-- fontawesome css link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-
+    
 </head>
 <body>
     
@@ -87,6 +90,7 @@
                         {% endif %}
                         <h3>{{user.username}}</h3>
                 </div>
+                
                
                 <div class="preferencias">
                     <h4 class="mini-headign">Preferências</h4>
@@ -277,16 +281,19 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <h2>Amigos</h2>
-                        {% for amigo in amigos %}
-                        <li>
-                            {{ amigo.username }}
-                            <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                            </form>
-                        </li>
-                    {% endfor %}
+                        <ul class="amigos-lista">
+                            {% for amigo in amigos %}
+                            <li class="amigo-item">
+                                <span class="amigo-nome">{{ amigo.username }}</span>
+                                <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="amigo-botao"><i class="fas fa-times"></i></button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
+                    
 
                 </div><!-- home right wrapper end -->
             </div><!-- home right end -->
