@@ -277,15 +277,15 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <h2>Amigos</h2>
-                            {% if amigos %}
-                            <ul>
-                                {% for amigo in amigos %}
-                                <li>{{ amigo.username }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% else %}
-                            <p>Você não tem amigos adicionados.</p>
-                            {% endif %}
+                        {% for amigo in amigos %}
+                        <li>
+                            {{ amigo.username }}
+                            <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </li>
+                    {% endfor %}
                     </div>
 
                 </div><!-- home right wrapper end -->

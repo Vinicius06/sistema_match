@@ -33,6 +33,7 @@ urlpatterns = [
     path('buscar-matches/', views.buscar_matches, name='buscar_matches'),
     path('adicionar_amizade/<int:user_id>/', views.adicionar_amizade, name='adicionar_amizade'),
     path('teste/', views.teste, name='teste'),
+    path('excluir_amizade/<int:amigo_id>/', views.excluir_amizade, name='excluir_amizade'),
 
 
 ] 

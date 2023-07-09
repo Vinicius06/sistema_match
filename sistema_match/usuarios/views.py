@@ -438,3 +438,17 @@ def adicionar_amizade(request, user_id):
     request.user.userprofile.amigos.add(usuario_destino)
 
     return redirect('profile_usuario')
+
+@login_required(login_url='/login/')
+def excluir_amizade(request, amigo_id):
+    amigo = get_object_or_404(User, id=amigo_id)
+
+    # Verifica se a amizade existe
+    if request.user.userprofile.amigos.filter(id=amigo.id).exists():
+        # Remove a amizade do perfil do usuário logado
+        request.user.userprofile.amigos.remove(amigo)
+
+        # Exclui a amizade do banco de dados
+        Amizade.objects.filter(usuario_origem=request.user, usuario_destino=amigo).delete()
+
+    return redirect('profile_usuario')
