@@ -46,7 +46,9 @@
                 <i class="fa-solid fa-bell"></i>
                 <div class="profile">
                     {% if user_profile.profile_image %}
-                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                    <a href="{% url 'profile_usuario' %}">
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                    </a>
                     {% else %}
                          <p>Sem foto de perfil</p>
                     {% endif %}
@@ -77,7 +79,9 @@
 
                 <div class="profile">
                     {% if user_profile.profile_image %}
-                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                    <a href="{% url 'profile_usuario' %}">
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                    </a>
                     {% else %}
                          <p>Sem foto de perfil</p>
                     {% endif %}
@@ -228,7 +232,7 @@
                     <div class="messenger">
                         <div class="messenger-search">
                             <i class="fa-solid fa-user-group"></i>
-                            <h4>Amigos</h4>
+                            <h4>Matches</h4>
                             <input type="search" placeholder="Pesquisar">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>

@@ -46,7 +46,9 @@
                     <i class="fa-solid fa-bell"></i>
                     <div class="profile">
                         {% if user_profile.profile_image %}
-                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                        <a href="{% url 'profile_usuario' %}">
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                        </a>
                         {% else %}
                              <p>Sem foto de perfil</p>
                         {% endif %}
@@ -79,7 +81,9 @@
 
                 <div class="profile">
                     {% if user_profile.profile_image %}
-                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de perfil", class="foto-perfil">
+                    <a href="{% url 'profile_usuario' %}">
+                        <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                    </a>
                     {% else %}
                          <p>Sem foto de perfil</p>
                     {% endif %}
@@ -189,23 +193,10 @@
                     <div class="event-friend">
                     
                         <div class="friend">
-                            <h3 class="heading">Pedidos de Amizade <span>ver tudo</span></h3>
-                            <ul>
-                                <li><img src="{% static 'images/cristiano.png' %}" alt="user"></li>
-                                <li>
-                                    <b>Cristiano Ronaldo</b>
-                                    <p>Sou melhor que o Messi</p>
-                                    <button>confirmar</button><button class="friend-remove">remover</button>
-                                </li>
-                            </ul>
-                            <ul>
-                                <li><img src="{% static 'images/messi.png' %}" alt="user"></li>
-                                <li>
-                                    <b>Messi</b>
-                                    <p>Papumpirulito Pão Doce</p>
-                                    <button>confirmar</button><button class="friend-remove">remover</button>
-                                </li>
-                            </ul>
+                            <h3 class="heading">Deseja procurar Matches?</h3>
+                            <form action="{% url 'buscar_matches' %}" method="GET">
+                                <button type="submit">Procurar Matches</button>
+                            </form>
                         </div>
 
                     </div>
