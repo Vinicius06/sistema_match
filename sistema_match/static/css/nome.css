@@ -11,3 +11,9 @@
 .amigo-botao {
     margin-left: 10px;
 }
+
+.nome-remetente {
+    font-weight: bold;
+    color: blue;
+    /* Outros estilos que você desejar adicionar */
+  }

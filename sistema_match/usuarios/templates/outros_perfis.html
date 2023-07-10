@@ -40,12 +40,18 @@
                     </form>
                 </div>
                 <div class="iconBox1">
-                    <i class="fa-solid fa-house"></i>
-                    <i class="fa-solid fa-user-group"></i>
+                    <a href="{% url 'plataforma' %}">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    <a href="{% url 'meus_matchs' %}">
+                        <i class="fa-solid fa-user-group"></i>
+                    </a>
                 </div>
                 <div class="iconBox2">
                     <i class="fa-solid fa-circle-plus"></i>
-                    <i class="fa-brands fa-facebook-messenger"></i>
+                    <a href="{% url 'meus_matchs' %}">
+                        <i class="fa-brands fa-facebook-messenger"></i>
+                    </a>
                     <i class="fa-solid fa-bell"></i>
                     <div class="profile">
                         {% if user_profile.profile_image %}
