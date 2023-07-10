@@ -94,38 +94,39 @@
                     <h3>{{user.username}}</h3>
             </div>
                
-                <div class="preferencias">
-                    <h4 class="mini-headign">Preferências</h4>
-                    <label>
-                        <img src="{% static 'images/filmes.png' %}" alt="filmes">
-                        <a href="{% url 'filmes' %}">Filmes</a>
-                    </label>
-                    <br>
-                    <label>
-                        <img src="{% static 'images/series.png' %}" alt="series">
-                        <a href="{% url 'series' %}">Séries</a>
+            <div class="preferencias">
+                <h4 class="mini-headign">Preferências</h4>
+                <label>
+                    <img src="{% static 'images/filmes.png' %}" alt="filmes">
+                    <a href="{% url 'filmes' %}">Filmes</a>
+                </label>
+                <br>
+                <label>
+                    <img src="{% static 'images/series.png' %}" alt="series">
+                    <a href="{% url 'series' %}">Séries</a>
 
-                    </label>
-                    <br>
-                    <label>
-                        <img src="{% static 'images/livros.png' %}" alt="livros">
-                        <a href="{% url 'livros' %}">Livros</a>
-                    </label>
-                    <br>
-                    <label>
-                        <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
-                        <a href="{% url 'animacoes' %}">Animações</a>
-                    </label>
-                    <br>
-                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
-                </div>
+                </label>
+                <br>
+                <label>
+                    <img src="{% static 'images/livros.png' %}" alt="livros">
+                    <a href="{% url 'livros' %}">Livros</a>
+                </label>
+                <br>
+                <label>
+                    <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
+                    <a href="{% url 'animacoes' %}">Animações</a>
+                </label>
+                <br>
+                <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
+            </div>
                 <br>
                 <div class="group">
                     <h4 class="mini-headign">Grupos</h4>
+                    
                     <label>
                         <img src="{% static 'images/jovemfla.png' %}" alt="group01">
                         <span>Jovem Fla</span>
-                    </label>
+                    </label>   
                     
                     <label>
                         <img src="{% static 'images/flamanguaca.png' %}" alt="group02">

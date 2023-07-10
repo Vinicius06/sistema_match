@@ -61,7 +61,7 @@ def login(request):
         else:
             error_message = 'Email ou senha inválidos.'
             messages.error(request, error_message)
-            return redirect('login')
+            return redirect('home')
 
 
 
