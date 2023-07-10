@@ -1,10 +1,14 @@
-{% if user != request.user %}
-    {% if request.user not in user_profile.amigos.all %}
-        <form method="POST" action="{% url 'adicionar_amizade' user_id=user_profile.user.id %}">
-            {% csrf_token %}
-            <button type="submit">Adicionar amigo</button>
-        </form>
-    {% else %}
-        <p>Já é seu amigo</p>
-    {% endif %}
-{% endif %}
+<h1>Enviar Mensagem para {{ username }}</h1>
+
+<div>
+    {% for mensagem in mensagens %}
+    <p>{{ mensagem.remetente }} - {{ mensagem.data_envio }}</p>
+    <p>{{ mensagem.conteudo }}</p>
+    {% endfor %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+</form>

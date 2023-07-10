@@ -1,23 +1,275 @@
 {% load static %}
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <title>matchflix.com</title>
+    <!-- style css link -->
+    <link rel="stylesheet" href="{% static 'css/nome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    <link rel="stylesheet" type href="{% static 'css/style2.css' %}">
+    
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-        <title>matchflix.com</title>
-        <!-- style css link -->
-        <link rel="stylesheet" href="{% static 'css/style2.css' %}">
-        <!-- fontawesome css link -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    </head>
-    <p>Essas são suas configurações, {{user.username}}</p>
 
-    <body>
-    <body>
+    <!-- fontawesome css link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    
+</head>
+<body>
+    
+<!-- header section start -->
+
+    
+    <header>
+        <div class="header-container">
+            <div class="header-wrapper">
+                <div class="logoBox">
+                    <a href="{% url 'plataforma' %}">
+                        <img src="{% static 'images/matchflix_logo.png' %}" alt="logo">
+                    </a>
+                </div>
+                <div class="searchBox">
+                    <form method="GET" action="{% url 'search_profiles' %}">
+                        <input type="search" name="query" placeholder="Pesquisar perfis">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="iconBox1">
+                    <i class="fa-solid fa-house"></i>
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+                <div class="iconBox2">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                    <i class="fa-solid fa-bell"></i>
+                    <div class="profile">
+                        {% if user_profile.profile_image %}
+                        <a href="{% url 'profile_usuario' %}">
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                        </a>
+                        {% else %}
+                            <img src="{% static 'images/semfoto.png' %}" alt="semfoto">
+                        {% endif %}
+                        <h3>{{user.username}}</h3>
+                        
+                </div>
+                <select id="dropdown" onchange="redirectToPage(this)">
+                        <option value="meu_perfil"><i class="fas fa-user"></i>Meu Perfil</option>
+                        <option value="pagina"><i class="fas fa-user"></i>Página Inicial</option>
+                        <option value="configuracoes">Configurações</option>
+                        <option value="logout">Logout</option>
+                    </select>
+            </div>
+        </div>
+        
+    </header>
+    
+<!-- header section end -->
+<!-- home section start -->
+
+
+
+
+  
+<div class="home">
+    <div class="container">
+        <div class="home-weapper">
+
+            <!-- home left start here -->
+            <div class="home-left">
+
+                <div class="profile">
+                        {% if user_profile.profile_image %}
+                        <a href="{% url 'profile_usuario' %}">
+                            <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
+                        </a>
+                        {% else %}
+                            <img src="{% static 'images/semfoto.png' %}" alt="semfoto">
+                        {% endif %}
+                        <h3>{{user.username}}</h3>
+                </div>
+                
+               
+                <div class="preferencias">
+                    <h4 class="mini-headign">Preferências</h4>
+                    <label>
+                        <img src="{% static 'images/filmes.png' %}" alt="filmes">
+                        <a href="{% url 'filmes' %}">Filmes</a>
+                    </label>
+                    <br>
+                    <label>
+                        <img src="{% static 'images/series.png' %}" alt="series">
+                        <a href="{% url 'series' %}">Séries</a>
+
+                    </label>
+                    <br>
+                    <label>
+                        <img src="{% static 'images/livros.png' %}" alt="livros">
+                        <a href="{% url 'livros' %}">Livros</a>
+                    </label>
+                    <br>
+                    <label>
+                        <img src="{% static 'images/animacoes.png' %}" alt="animacoes">
+                        <a href="{% url 'animacoes' %}">Animações</a>
+                    </label>
+                    <br>
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+                <br>
+                <div class="group">
+                    <h4 class="mini-headign">Grupos</h4>
+                    <label>
+                        <img src="{% static 'images/jovemfla.png' %}" alt="group01">
+                        <span>Jovem Fla</span>
+                    </label>
+                    
+                    <label>
+                        <img src="{% static 'images/flamanguaca.png' %}" alt="group02">
+                        <span>Fla Manguaça</span>
+                    </label>
+
+                    <label>
+                        <img src="{% static 'images/rubronegra.png' %}" alt="group03">
+                        <span>Raça Rubro-Negra</span>
+                    </label>
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+                
+                <div class="explore">
+                    <h4 class="mini-headign">Explorar</h4>
+                   
+                    <a href="#"><i class="fa-solid fa-user-group"></i>Novos Grupos</a>
+
+
+                    <div><label class="darkTheme"> <span></span></label> Aplicar Tema Escuro</div>
+
+                    <button class="see-more-btn">Ver Mais <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+                
+            </div><!-- home left end here -->
+
+            <!-- home center start here -->
+
+            <div class="home-center">
+                <div class="home-center-wrapper"> 
+                    <div class="fb-post1">
+                        <div class="fb-post1-container">
+                            <div class="fb-post1-header">
+                                                               
+                            <p> Deseja trocar a foto de Perfil?</p>
+                                <a href="{% url 'upload_image' %}"><button>Sim</button></a>
+                                  
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- home center wrapper end -->
+            </div> <!-- home center end -->
+
+            <div class="home-right">
+                <div class="home-right-wrapper">
+
+                    <div class="event-friend">
+                    
+                        <div class="friend">
+                            <h3 class="heading">Deseja procurar Matchs?</h3>
+                            <form action="{% url 'buscar_matches' %}" method="GET">
+                                <button type="submit">Procurar Matchs</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="create-page">
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-circle-plus"></i>
+                                <h4>Criar Grupos</h4>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </li>
+                            <li>
+                                <img src="{% static 'images/MRC.png' %}" alt="groups">
+                            </li>
+                            <li>
+                                <b>Mengão Rage Comics <span>200k Membros</span></b>
+                                <button>Juntar-se ao Grupo</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="messenger">
+                        <div class="messenger-search">
+                            <i class="fa-solid fa-user-group"></i>
+                            <h4>Buscar Matchs</h4>
+                            <input type="search" placeholder="Pesquisar">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h2>Matchs</h2>
+                        <ul class="amigos-lista">
+                            {% for amigo in amigos %}
+                            <li class="amigo-item">
+                                <span class="amigo-nome">{{ amigo.username }}</span>
+                                <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="amigo-botao"><i class="fas fa-times"></i></button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                        <a href="{% url 'meus_matchs' %}"><button>Ir para Matchs</button></a>
+                        </ul>
+                    </div>
+                    
+
+                </div><!-- home right wrapper end -->
+            </div><!-- home right end -->
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- home section end -->
+
+<script>
+    var darkButton = document.querySelector(".darkTheme");
+
+    darkButton.onclick = function(){
+        darkButton.classList.toggle("button-Active");
+        document.body.classList.toggle("dark-color")
+    }
+
+
+    function redirectToPage(selectElement) {
+        var selectedValue = selectElement.value;
+
+        if (selectedValue === "meu_perfil") {
+            window.location.href = "{% url 'profile_usuario' %}";
+        } else if (selectedValue === "configuracoes") {
+            window.location.href = "{% url 'configuracoes' %}";
+        } else if (selectedValue === "logout") {
+            window.location.href = "{% url 'logout' %}";
+        } else if (selectedValue === "pagina") {
+            window.location.href = "{% url 'plataforma' %}";
+        }
+    }
+
+    
+</script>
+
+
+</body>
 </html>

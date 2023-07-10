@@ -34,7 +34,11 @@ urlpatterns = [
     path('adicionar_amizade/<int:user_id>/', views.adicionar_amizade, name='adicionar_amizade'),
     path('teste/', views.teste, name='teste'),
     path('excluir_amizade/<int:amigo_id>/', views.excluir_amizade, name='excluir_amizade'),
-
+    path('meus_matchs/', views.meus_matchs, name='meus_matchs'),
+    path('enviar-mensagem/<str:username>/', views.enviar_mensagem, name='enviar_mensagem'),
+    path('enviar-mensagem/<str:username>/<int:mensagem_id>/', views.enviar_mensagem, name='conversa_mensagem'),
+    path('caixa-entrada/', views.caixa_entrada, name='caixa_entrada'),
+    path('marcar-lida/<int:mensagem_id>/', views.marcar_lida, name='marcar_lida'),
 
 ] 
 

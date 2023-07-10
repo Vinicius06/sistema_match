@@ -50,7 +50,7 @@
                             <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
                         </a>
                         {% else %}
-                             <p>Sem foto de perfil</p>
+                            <img src="{% static 'images/semfoto.png' %}" alt="semfoto">
                         {% endif %}
                         <h3>{{user.username}}</h3>
                 </div>
@@ -85,7 +85,7 @@
                         <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
                     </a>
                     {% else %}
-                         <p>Sem foto de perfil</p>
+                        <img src="{% static 'images/semfoto.png' %}" alt="semfoto">
                     {% endif %}
                     <h3>{{user.username}}</h3>
             </div>
@@ -187,9 +187,9 @@
                     <div class="event-friend">
                     
                         <div class="friend">
-                            <h3 class="heading">Deseja procurar Matches?</h3>
+                            <h3 class="heading">Deseja procurar Matchs?</h3>
                             <form action="{% url 'buscar_matches' %}" method="GET">
-                                <button type="submit">Procurar Matches</button>
+                                <button type="submit">Procurar Matchs</button>
                             </form>
                         </div>
 
@@ -215,28 +215,21 @@
                     <div class="messenger">
                         <div class="messenger-search">
                             <i class="fa-solid fa-user-group"></i>
-                            <h4>Amigos</h4>
+                            <h4>Matchs</h4>
                             <input type="search" placeholder="Pesquisar">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
-                        <ul>
-                            <li>
-                                <img src="{% static 'images/Jaoboy.png' %}" alt="user">
-                                <b>Jaoboy <span>Online</span></b>
-                                <i class="fa-brands fa-facebook-messenger"></i>
+                        <ul class="amigos-lista">
+                            {% for amigo in amigos %}
+                            <li class="amigo-item">
+                                <span class="amigo-nome">{{ amigo.username }}</span>
+                                <form action="{% url 'excluir_amizade' amigo.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="amigo-botao"><i class="fas fa-times"></i></button>
+                                </form>
                             </li>
-
-                            <li>
-                                <img src="{% static 'images/gustavin.png' %}" alt="user">
-                                <b>Gustavin <span>Offline</span></b>
-                                <i class="fa-brands fa-facebook-messenger"></i>
-                            </li>
-
-                            <li>
-                                <img src="{% static 'images/Neymar.png' %}" alt="user">
-                                <b>Neymar <span>Online</span></b>
-                                <i class="fa-brands fa-facebook-messenger"></i>
-                            </li>
+                            {% endfor %}
+                        <a href="{% url 'meus_matchs' %}"><button>Ir para Matchs</button></a>
                         </ul>
                     </div>
 

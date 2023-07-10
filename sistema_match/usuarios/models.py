@@ -39,3 +39,18 @@ class Amizade(models.Model):
     def __str__(self):
         return f'{self.usuario_origem.username} -> {self.usuario_destino.username}'
     
+class Mensagem(models.Model):
+    remetente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensagens_enviadas')
+    destinatario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensagens_recebidas')
+    conteudo = models.TextField()
+    data_envio = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.remetente.username} -> {self.destinatario.username}'
+    
+class CaixaEntrada(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    mensagens = models.ManyToManyField(Mensagem, blank=True, related_name='caixa_entrada')
+    
+    def __str__(self):
+        return self.usuario.username

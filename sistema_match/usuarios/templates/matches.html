@@ -237,9 +237,9 @@
                     <div class="event-friend">
                     
                         <div class="friend">
-                            <h3 class="heading">Deseja procurar Matches?</h3>
+                            <h3 class="heading">Deseja procurar Matchs?</h3>
                             <form action="{% url 'buscar_matches' %}" method="GET">
-                                <button type="submit">Procurar Matches</button>
+                                <button type="submit">Procurar Matchs</button>
                             </form>
                         </div>
 
@@ -265,11 +265,11 @@
                     <div class="messenger">
                         <div class="messenger-search">
                             <i class="fa-solid fa-user-group"></i>
-                            <h4>Amigos</h4>
+                            <h4>Matchs</h4>
                             <input type="search" placeholder="Pesquisar">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
-                        <h2>Amigos</h2>
+                        <h2>Meus matchs</h2>
                         <ul class="amigos-lista">
                             {% for amigo in amigos %}
                             <li class="amigo-item">
@@ -280,6 +280,7 @@
                                 </form>
                             </li>
                             {% endfor %}
+                        <a href="{% url 'meus_matchs' %}"><button>Ir para Matchs</button></a>
                         </ul>
                     </div>
                     

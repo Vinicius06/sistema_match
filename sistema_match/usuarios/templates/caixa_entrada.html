@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caixa de Entrada</title>
+</head>
+<body>
+    <h1>Caixa de Entrada</h1>
+    
+    <ul>
+        {% for mensagem in mensagens %}
+            <li>
+                <strong>Remetente:</strong> {{ mensagem.remetente }}
+                <br>
+                <strong>Assunto:</strong> {{ mensagem.assunto }}
+                <br>
+                <strong>Mensagem:</strong> {{ mensagem.conteudo }}
+                <br>
+                {% if not mensagem.lida %}
+                    <form method="POST" action="{% url 'marcar_lida' mensagem.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Marcar como lida</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

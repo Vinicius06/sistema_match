@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade
+from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade, Mensagem
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -99,3 +99,9 @@ class OutrosPerfisForm(forms.ModelForm):
         model = UserProfile
         fields = []
 
+class MensagemForm(forms.Form):
+    conteudo = forms.CharField(widget=forms.Textarea)
+
+
+class MarcarMensagemLidaForm(forms.Form):
+    mensagem_id = forms.IntegerField(widget=forms.HiddenInput())

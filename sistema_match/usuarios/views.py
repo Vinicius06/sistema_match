@@ -1,19 +1,16 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, User, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade
-from django.views.generic import CreateView
+from .models import UserProfile, User, Preferencias_filme
+from .models import Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade, Mensagem, CaixaEntrada
 from django.contrib.auth import logout
-from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivroForm, AdicionarAnimacaoForm, AdicionarSerieForm, AdicionarAmigoForm, OutrosPerfisForm
-from itertools import chain
-import random
-from django.urls import reverse
+from .forms import UserProfileForm, SearchForm, AdicionarFilmeForm, AdicionarLivroForm, MensagemForm, MarcarMensagemLidaForm
+from .forms import AdicionarAnimacaoForm, AdicionarSerieForm, AdicionarAmigoForm, OutrosPerfisForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.db.models import Q, Count, Subquery, OuterRef
+from django.db.models import Q
 
 # View responsável pelo cadastro de usuários
 
@@ -23,7 +20,7 @@ def teste(request):
 def cadastro(request):
     if request.method == "GET":
         return render(request, 'cadastro.html')
-    else: 
+    else:
          # Obter os dados enviados pelo formulário de cadastro
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -34,7 +31,7 @@ def cadastro(request):
 
         if user:
             return HttpResponse('Já existe um usuario com esse username')
-        
+
         # Criar e salvar um novo usuário
 
         user = User.objects.create_user(username=username, email=email, password=senha)
@@ -52,28 +49,30 @@ def login(request):
         # Obter os dados enviados pelo formulário de login
         username = request.POST.get('username')
         senha = request.POST.get('senha')
-        
+
         # Autenticar o usuário
         user = authenticate(username=username, password=senha)
-        
-        if user: 
+
+        if user:
             # Realizar o login do usuário e redirecionar para a página da plataforma
             login_django(request, user)
             return redirect('/plataforma/')
-            
-        else: 
+
+        else:
             error_message = 'Email ou senha inválidos.'
             messages.error(request, error_message)
             return redirect('login')
-        
 
-            
 
- # View da plataforma que requer autenticação       
+
+
+ # View da plataforma que requer autenticação
 @login_required(login_url="/login/")
 def plataforma(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    context = {'user_profile': user_profile}
+    amigos = user_profile.amigos.all()
+    context = {'user_profile': user_profile,
+               'amigos': amigos,}
     return render(request, 'plataforma.html', context)
 
 @login_required(login_url="/login/")
@@ -84,7 +83,9 @@ def logout_view(request):
 @login_required(login_url="/login/")
 def perfil(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    context = {'user_profile': user_profile}
+    amigos = user_profile.amigos.all()
+    context = {'user_profile': user_profile,
+               'amigos':amigos, }
     return render(request, 'perfil.html', context)
 
 @login_required(login_url="/login/")
@@ -109,7 +110,13 @@ def profile_usuario(request):
 
 @login_required(login_url="/login/")
 def configuracoes(request):
-    return render(request, 'configuracoes.html' )
+    user_profile = UserProfile.objects.get(user=request.user)
+    amigos = user_profile.amigos.all()
+    context = {
+        'user_profile': user_profile,
+        'amigos': amigos,
+    }
+    return render(request, 'configuracoes.html', context )
 
 @login_required
 def my_view(request):
@@ -119,19 +126,23 @@ def my_view(request):
 @login_required(login_url="/login/")
 def filmes(request):
     user_profile = request.user.userprofile
+    amigos = user_profile.amigos.all()
     filmes_preferidos = user_profile.filmes_preferidos.all()
     context = {
         'user_profile': user_profile,
-        'filmes_preferidos': filmes_preferidos
+        'filmes_preferidos': filmes_preferidos,
+        'amigos': amigos,
     }
     return render(request, 'filmes.html', context)
 @login_required(login_url="/login/")
 def livros(request):
     user_profile = request.user.userprofile
     livros_preferidos = user_profile.livros_preferidos.all()
+    amigos = user_profile.amigos.all()
     context = {
         'user_profile': user_profile,
-        'livros_preferidos': livros_preferidos
+        'livros_preferidos': livros_preferidos,
+        'amigos': amigos
     }
     return render(request, 'livros.html', context)
 
@@ -139,9 +150,11 @@ def livros(request):
 def series(request):
     user_profile = request.user.userprofile
     series_preferidos = user_profile.series_preferidos.all()
+    amigos = user_profile.amigos.all()
     context = {
         'user_profile': user_profile,
-        'series_preferidos': series_preferidos
+        'series_preferidos': series_preferidos,
+        'amigos': amigos
     }
     return render(request, 'series.html', context)
 
@@ -149,16 +162,20 @@ def series(request):
 def animacoes(request):
     user_profile = request.user.userprofile
     animacoes_preferidos = user_profile.animacoes_preferidos.all()
+    amigos = user_profile.amigos.all()
     context = {
         'user_profile': user_profile,
-        'animacoes_preferidos': animacoes_preferidos
+        'animacoes_preferidos': animacoes_preferidos,
+        'amigos': amigos,
     }
     return render(request, 'animacoes.html', context)
-    
+
 
 @login_required(login_url="/login/")
 def search(request):
     form = SearchForm(request.GET)
+    user_profile = request.user.userprofile
+    amigos = user_profile.amigos.all()
     if form.is_valid():
         search_query = form.cleaned_data['search_query']
         # Salve o valor da busca em uma lista ou banco de dados, por exemplo:
@@ -176,7 +193,9 @@ def search(request):
         return render(request, 'filmes.html', context)
 
     context = {
+        'user_profile': user_profile,
         'form': form,
+        'amigos': amigos,
     }
     return render(request, 'filmes.html', context)
 
@@ -193,7 +212,7 @@ def upload_image(request):
             return redirect('upload_image')
     else:
         form = UserProfileForm(instance=user_profile)
-    
+
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
 from django.shortcuts import render
@@ -217,7 +236,8 @@ def filme_usuario(request):
             user_profile.filmes_preferidos.add(filme_preferido)
             user_profile.save()
 
-            return redirect('filmes')  # Redirecionar para a página de filmes após adicionar o filme preferido
+            # Redirecionar para a página de filmes após adicionar o filme preferido
+            return redirect('filmes')
     else:
         form = AdicionarFilmeForm()
 
@@ -257,7 +277,8 @@ def livro_usuario(request):
             user_profile.livros_preferidos.add(livro_preferido)
             user_profile.save()
 
-            return redirect('livros')  # Redirecionar para a página de filmes após adicionar o filme preferido
+            # Redirecionar para a página de filmes após adicionar o filme preferido
+            return redirect('livros')
     else:
         form = AdicionarLivroForm()
 
@@ -297,7 +318,8 @@ def serie_usuario(request):
             user_profile.series_preferidos.add(serie_preferido)
             user_profile.save()
 
-            return redirect('series')  # Redirecionar para a página de filmes após adicionar o filme preferido
+            # Redirecionar para a página de filmes após adicionar o filme preferido
+            return redirect('series')
     else:
         form = AdicionarSerieForm()
 
@@ -337,7 +359,8 @@ def animacao_usuario(request):
             user_profile.animacoes_preferidos.add(animacao_preferido)
             user_profile.save()
 
-            return redirect('animacoes')  # Redirecionar para a página de filmes após adicionar o filme preferido
+            # Redirecionar para a página de filmes após adicionar o filme preferido
+            return redirect('animacoes')
     else:
         form = AdicionarAnimacaoForm()
 
@@ -365,6 +388,7 @@ def outros_perfis(request, user_id):
     user_profile = get_object_or_404(UserProfile, user=user)
     user_preferences = get_object_or_404(UserPreferences, user=user)
     adicionar_amigo_form = AdicionarAmigoForm(user=request.user)
+    amigos = user_profile.amigos.all()
 
     if request.method == 'POST':
         form = OutrosPerfisForm(request.POST)
@@ -381,6 +405,7 @@ def outros_perfis(request, user_id):
         'user_preferences': user_preferences,
         'adicionar_amigo_form': adicionar_amigo_form,
         'form': form,
+        'amigos': amigos,
     }
     return render(request, 'outros_perfis.html', context)
 
@@ -417,7 +442,7 @@ def buscar_matches(request):
     context = {
         'matching_users': matching_users,
     }
-    
+
     return render(request, 'matches.html', context)
 
 @login_required(login_url='/login/')
@@ -455,3 +480,75 @@ def excluir_amizade(request, amigo_id):
 
     return redirect('profile_usuario')
 
+@login_required(login_url="/login/")
+def meus_matchs(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    amigos = user_profile.amigos.all()
+    context = {'user_profile': user_profile,
+               'amigos': amigos,}
+    return render(request, 'meus_matchs.html', context)
+
+
+@login_required(login_url="/login/")
+def enviar_mensagem(request, username):
+    if request.method == 'POST':
+        form = MensagemForm(request.POST)
+        if form.is_valid():
+            remetente = request.user
+            destinatario = User.objects.get(username=username)
+            conteudo = form.cleaned_data['conteudo']
+            mensagem = Mensagem.objects.create(remetente=remetente, destinatario=destinatario, conteudo=conteudo)
+            return redirect('enviar_mensagem', username=username)
+    else:
+        form = MensagemForm()
+    mensagens = Mensagem.objects.filter(remetente=request.user, destinatario__username=username) | Mensagem.objects.filter(remetente__username=username, destinatario=request.user).order_by('data_envio')
+    return render(request, 'enviar_mensagem.html', {'form': form, 'mensagens': mensagens, 'username': username})
+
+
+@login_required(login_url="/login/")
+def caixa_entrada(request):
+    try:
+        caixa_entrada = CaixaEntrada.objects.get(usuario=request.user)
+    except CaixaEntrada.DoesNotExist:
+        caixa_entrada = CaixaEntrada.objects.create(usuario=request.user)
+
+    mensagens = caixa_entrada.mensagens.all()
+    
+    if request.method == 'POST':
+        form = MarcarMensagemLidaForm(request.POST)
+        if form.is_valid():
+            mensagem_id = form.cleaned_data['mensagem_id']
+            mensagem = get_object_or_404(Mensagem, pk=mensagem_id)
+            
+            if mensagem.destinatario == request.user:
+                # Marcar a mensagem como lida
+                # Implemente a lógica adequada para atualizar o estado da mensagem como lida
+                
+                return redirect('caixa_entrada')
+    else:
+        form = MarcarMensagemLidaForm()
+    
+    context = {
+        'mensagens': mensagens,
+        'form': form,
+    }
+    
+    return render(request, 'caixa_entrada.html', context)
+
+
+@login_required(login_url="/login/")
+def marcar_lida(request, mensagem_id):
+    mensagem = get_object_or_404(Mensagem, id=mensagem_id)
+    mensagem.lida = True
+    mensagem.save()
+
+    # Remover a mensagem da lista de mensagens na caixa de entrada
+    caixa_entrada = CaixaEntrada.objects.get(usuario=request.user)
+    mensagens = caixa_entrada.mensagens.exclude(id=mensagem_id)
+
+    # Atualizar o contexto e renderizar o template novamente
+    context = {
+        'mensagens': mensagens
+    }
+
+    return render(request, 'caixa_entrada.html', context)
