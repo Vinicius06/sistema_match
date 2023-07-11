@@ -41,4 +41,3 @@ urlpatterns = [
     path('marcar-lida/<int:mensagem_id>/', views.marcar_lida, name='marcar_lida'),
 
 ] 
-

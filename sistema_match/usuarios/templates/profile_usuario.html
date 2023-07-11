@@ -176,7 +176,8 @@
                             <div class="fb-p1-main">
                                 <h1>Foto de Perfil</h1>
                                 
-                                <div class="profile">
+                                
+                                    <h3>{{user.username}}</h3>
                                     {% if user_profile.profile_image %}
                                     <a href="{% url 'profile_usuario' %}">
                                         <img src="{{ user_profile.profile_image.url }}" alt="Foto de Perfil">
@@ -184,8 +185,7 @@
                                     {% else %}
                                         <img src="{% static 'images/semfoto.png' %}" alt="semfoto">
                                     {% endif %}
-                                    <h3>{{user.username}}</h3>
-                            </div>
+                            
                           
 
                                 <h1>Preferências</h1>

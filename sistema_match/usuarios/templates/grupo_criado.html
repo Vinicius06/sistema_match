@@ -1,0 +1,28 @@
+<!-- grupo_criado.html -->
+
+<h1>Grupo Criado</h1>
+<p>Nome do grupo: {{ grupo.nome }}</p>
+
+<h2>Membros</h2>
+<ul>
+  {% for membro in membros %}
+    <li>{{ membro.usuario.username }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Conversa</h2>
+<div class="conversa">
+  {% for mensagem in mensagens %}
+    <div class="mensagem">
+      <p><strong>{{ mensagem.remetente.username }}:</strong></p>
+      <p>{{ mensagem.conteudo }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<h2>Enviar Mensagem</h2>
+<form method="POST" action="{% url 'conversa_grupo' grupo_id=grupo.id %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Enviar</button>
+</form>

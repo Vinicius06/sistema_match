@@ -1,0 +1,9 @@
+<h1>Meus Grupos</h1>
+
+<ul>
+  {% for membro in membros %}
+    <li>{{ membro.grupo.nome }}</li>
+  {% empty %}
+    <li>Você não está em nenhum grupo.</li>
+  {% endfor %}
+</ul>

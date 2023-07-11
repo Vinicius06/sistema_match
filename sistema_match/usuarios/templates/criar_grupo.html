@@ -1,0 +1,6 @@
+<form method="POST" action="{% url 'criar_grupo' %}">
+    {% csrf_token %}
+    {{ grupo_form.as_p }}
+    <button type="submit">Criar Grupo</button>
+  </form>
+  
