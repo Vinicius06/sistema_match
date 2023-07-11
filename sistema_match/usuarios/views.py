@@ -78,7 +78,7 @@ def plataforma(request):
 @login_required(login_url="/login/")
 def logout_view(request):
     logout(request)
-    return redirect('home')
+    return redirect('/')
 
 @login_required(login_url="/login/")
 def perfil(request):
@@ -215,8 +215,6 @@ def upload_image(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
-from django.shortcuts import render
-from .models import UserProfile
 
 @login_required(login_url="/login/")
 def filme_usuario(request):
@@ -386,8 +384,8 @@ def deletar_animacao(request, animacao_id):
 def outros_perfis(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user_profile = get_object_or_404(UserProfile, user=user)
-    user_preferences = get_object_or_404(UserPreferences, user=user)
-    adicionar_amigo_form = AdicionarAmigoForm(user=request.user)
+    user_preferences = get_object_or_404(user=user)
+    adicionar_amigo_form = AdicionarAmigoForm(user=request.user) 
     amigos = user_profile.amigos.all()
 
     if request.method == 'POST':
