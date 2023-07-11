@@ -1,3 +1,7 @@
+"""
+Módulo de configuração do aplicativo.
+"""
+
 from django.apps import AppConfig
 
 

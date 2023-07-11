@@ -1,27 +1,31 @@
+"""
+Módulo de formulários para usuários.
+"""
+
 from django import forms
-from .models import UserProfile, Preferencias_filme, Preferencias_livro, Preferencias_animacao, Preferencias_serie, Amizade, Mensagem
+from .models import UserProfile, Amizade
 from django.contrib.auth import get_user_model
 from django.db import models
 
 
 class UserProfileForm(forms.ModelForm):
+    """Formulário para atualização do perfil do usuário."""
     class Meta:
         model = UserProfile
         fields = ['profile_image']
 
-
 class UploadForm(forms.Form):
+    """Formulário para upload de fotos."""
     photo = forms.ImageField()
 
 
 
 class SearchForm(forms.Form):
+    """Formulário para realizar busca."""
     search_query = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Digite sua busca'}))
 
-class PhraseForm(forms.Form):
-    phrase = forms.CharField(max_length=100)
-
 class PreferenciasFilmesForm(forms.ModelForm):
+    """Formulário para selecionar preferências de filmes."""
     class Meta:
         model = UserProfile
         fields = ['filmes_preferidos']
@@ -30,9 +34,11 @@ class PreferenciasFilmesForm(forms.ModelForm):
         }
 
 class AdicionarFilmeForm(forms.Form):
+    """Formulário para adicionar um filme."""
     filme = forms.CharField(max_length=100)
 
 class PreferenciasLivrosForm(forms.ModelForm):
+    """Formulário para selecionar preferências de livros."""
     class Meta:
         model = UserProfile
         fields = ['livros_preferidos']
@@ -41,9 +47,11 @@ class PreferenciasLivrosForm(forms.ModelForm):
         }
 
 class AdicionarLivroForm(forms.Form):
+    """Formulário para adicionar um livro."""
     livro = forms.CharField(max_length=100)
 
 class PreferenciasSeriesForm(forms.ModelForm):
+    """Formulário para selecionar preferências de séries."""
     class Meta:
         model = UserProfile
         fields = ['series_preferidos']
@@ -52,9 +60,11 @@ class PreferenciasSeriesForm(forms.ModelForm):
         }
 
 class AdicionarSerieForm(forms.Form):
+    """Formulário para adicionar uma série."""
     serie = forms.CharField(max_length=100)
 
 class PreferenciasAnimacoesForm(forms.ModelForm):
+    """Formulário para selecionar preferências de animações."""
     class Meta:
         model = UserProfile
         fields = ['animacoes_preferidos']
@@ -63,9 +73,11 @@ class PreferenciasAnimacoesForm(forms.ModelForm):
         }
 
 class AdicionarAnimacaoForm(forms.Form):
+    """Formulário para adicionar uma animação."""
     animacao = forms.CharField(max_length=100)
 
 class AdicionarAmigoForm(forms.Form):
+    """Formulário para adicionar um amigo."""
     amigo_id = forms.IntegerField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
@@ -93,6 +105,7 @@ class AdicionarAmigoForm(forms.Form):
             )
 
 class OutrosPerfisForm(forms.ModelForm):
+    """Formulário para exibir outros perfis de usuários."""
     amigo_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
@@ -100,8 +113,10 @@ class OutrosPerfisForm(forms.ModelForm):
         fields = []
 
 class MensagemForm(forms.Form):
+    """Formulário para enviar uma mensagem."""
     conteudo = forms.CharField(widget=forms.Textarea)
 
 
 class MarcarMensagemLidaForm(forms.Form):
+    """Formulário para marcar uma mensagem como lida."""
     mensagem_id = forms.IntegerField(widget=forms.HiddenInput())
