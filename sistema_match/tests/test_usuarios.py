@@ -1,12 +1,15 @@
 import pytest
 from django.contrib.auth.models import User
 from django.test import Client
+from django.contrib.auth import get_user_model
 from usuarios.models import UserProfile, Preferencias_filme, Preferencias_animacao, Preferencias_livro, Preferencias_serie
-from usuarios.forms import AdicionarAmigoForm, OutrosPerfisForm
+from usuarios.forms import AdicionarAmigoForm, OutrosPerfisForm, UserProfileForm
 from django.shortcuts import reverse, get_object_or_404, redirect
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.contrib.auth.decorators import login_required
+from django.urls import resolve, reverse
+
 
 @pytest.mark.django_db
 def test_cadastro_usuario():
@@ -427,4 +430,73 @@ def test_profile_usuario():
     # Verificar se a lista de amigos está presente no contexto da resposta
     assert 'amigos' in response.context
     assert response.context['amigos'].count() == 0  # Verificar se a lista de amigos está vazia inicialmente
+
+
+@pytest.mark.django_db
+def test_cadastro_url():
+    assert reverse('cadastro') == '/cadastro/'
+    assert resolve('/cadastro/').view_name == 'cadastro'
+
+@pytest.mark.django_db
+def test_login_url():
+    assert reverse('login') == '/login/'
+    assert resolve('/login/').view_name == 'login'
+
+@pytest.mark.django_db
+def test_plataforma_url():
+    assert reverse('plataforma') == '/plataforma/'
+    assert resolve('/plataforma/').view_name == 'plataforma'
+
+@pytest.mark.django_db
+def test_logout_url():
+    assert reverse('logout') == '/logout/'
+    assert resolve('/logout/').view_name == 'logout'
+
+@pytest.mark.django_db
+def test_filmes_url():
+    assert reverse('filmes') == '/filmes/'
+    assert resolve('/filmes/').view_name == 'filmes'
+
+@pytest.mark.django_db
+def test_series_url():
+    assert reverse('series') == '/series/'
+    assert resolve('/series/').view_name == 'series'
+
+@pytest.mark.django_db
+def test_series_url():
+    assert reverse('livros') == '/livros/'
+    assert resolve('/livros/').view_name == 'livros'
+
+@pytest.mark.django_db
+def test_animacoes_url():
+    assert reverse('animacoes') == '/animacoes/'
+    assert resolve('/animacoes/').view_name == 'animacoes'
+
+@pytest.mark.django_db
+def test_perfil_url():
+    assert reverse('perfil') == '/perfil/'
+    assert resolve('/perfil/').view_name == 'perfil'
+
+@pytest.mark.django_db
+def test_configuracoes_url():
+    assert reverse('configuracoes') == '/configuracoes/'
+    assert resolve('/configuracoes/').view_name == 'configuracoes'
+
+@pytest.mark.django_db
+def test_search_profiles_url():
+    assert reverse('search_profiles') == '/search_profiles/'
+    assert resolve('/search_profiles/').view_name == 'search_profiles'
+
+@pytest.mark.django_db
+def test_upload_image_url():
+    assert reverse('upload_image') == '/upload-image/'
+    assert resolve('/upload-image/').view_name == 'upload_image'
+
+@pytest.mark.django_db
+def test_enviar_mensagem_url():
+    assert reverse('enviar_mensagem', args=['testuser']) == '/enviar-mensagem/testuser/'
+    assert resolve('/enviar-mensagem/testuser/').view_name == 'enviar_mensagem'
+    assert reverse('conversa_mensagem', args=['testuser', 1]) == '/enviar-mensagem/testuser/1/'
+    assert resolve('/enviar-mensagem/testuser/1/').view_name == 'conversa_mensagem'
+
 

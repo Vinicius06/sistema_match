@@ -17,6 +17,8 @@ from django.db.models import Q
 def teste(request):
     return render(request, 'teste.html' )
 
+#História de Usuário EU001:
+#Eu como <usuario> quero conseguir me cadastrar no sistema.
 def cadastro(request):
     if request.method == "GET":
         return render(request, 'cadastro.html')
@@ -30,7 +32,7 @@ def cadastro(request):
         user = User.objects.filter(username=username).first()
 
         if user:
-            return HttpResponse('Já existe um usuario com esse username')
+            return HttpResponse('Já existe um usuario com esse username(VOLTE A PAGINA NÃO CRIEI UM RETORNO)')
 
         # Criar e salvar um novo usuário
 
@@ -38,9 +40,11 @@ def cadastro(request):
         user.save()
         profile = UserProfile(user=user)
         profile.save()
-        return HttpResponse('Usuário cadastrado com sucesso!')
+        return HttpResponse('Usuário cadastrado com sucesso!(VOLTE A PAGINA NÃO CRIEI UM RETORNO)')
 
 
+#História de Usuário EU002:
+#Eu como <usuario> quero conseguir logar no sistema.
 # View responsável pelo login dos usuários
 def login(request):
     if request.method == "GET":
@@ -65,7 +69,8 @@ def login(request):
 
 
 
-
+#História de Usuário EU003:
+#Eu como <usuario> quero conseguir entrar na plataforma ao logar no sistema.
  # View da plataforma que requer autenticação
 @login_required(login_url="/login/")
 def plataforma(request):
@@ -75,6 +80,8 @@ def plataforma(request):
                'amigos': amigos,}
     return render(request, 'plataforma.html', context)
 
+#História de Usuário EU004:
+#Eu como <usuario> quero conseguir deslogar do sistema.
 @login_required(login_url="/login/")
 def logout_view(request):
     logout(request)
@@ -88,6 +95,8 @@ def perfil(request):
                'amigos':amigos, }
     return render(request, 'perfil.html', context)
 
+#História de Usuário EU005:
+#Eu como <usuario> quero conseguir visualizar meu perfil.
 @login_required(login_url="/login/")
 def profile_usuario(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -108,6 +117,8 @@ def profile_usuario(request):
     return render(request, 'profile_usuario.html', context)
 
 
+#História de Usuário EU006:
+#Eu como <usuario> quero conseguir ir nas configurações do meu perfil.
 @login_required(login_url="/login/")
 def configuracoes(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -123,6 +134,9 @@ def my_view(request):
     options = ['meu_perfil', 'configuracoes', 'logout']
     return render(request, 'plataforma.html', {'options': options})
 
+
+#História de Usuário EU007:
+#Eu como <usuario> quero conseguir visualizar meus filmes favoritos.
 @login_required(login_url="/login/")
 def filmes(request):
     user_profile = request.user.userprofile
@@ -134,6 +148,9 @@ def filmes(request):
         'amigos': amigos,
     }
     return render(request, 'filmes.html', context)
+
+#História de Usuário EU008:
+#Eu como <usuario> quero conseguir visualizar meus livros favoritos.
 @login_required(login_url="/login/")
 def livros(request):
     user_profile = request.user.userprofile
@@ -146,6 +163,9 @@ def livros(request):
     }
     return render(request, 'livros.html', context)
 
+
+#História de Usuário EU009:
+#Eu como <usuario> quero conseguir visualizar minhas series favoritas.
 @login_required(login_url="/login/")
 def series(request):
     user_profile = request.user.userprofile
@@ -158,6 +178,9 @@ def series(request):
     }
     return render(request, 'series.html', context)
 
+
+#História de Usuário EU010:
+#Eu como <usuario> quero conseguir visualizar minhas animações favoritas.
 @login_required(login_url="/login/")
 def animacoes(request):
     user_profile = request.user.userprofile
@@ -200,7 +223,8 @@ def search(request):
     return render(request, 'filmes.html', context)
 
 
-
+#História de Usuário EU011:
+#Eu como <usuario> quero conseguir mudar minha foto de perfil.
 @login_required(login_url="/login/")
 def upload_image(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -215,7 +239,8 @@ def upload_image(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
-
+#História de Usuário EU012:
+#Eu como <usuario> quero conseguir adicionar meu filme favorito.
 @login_required(login_url="/login/")
 def filme_usuario(request):
     user_profile = request.user.userprofile
@@ -241,6 +266,9 @@ def filme_usuario(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
+
+#História de Usuário EU012:
+#Eu como <usuario> quero conseguir deletar o filme da minhas preferencias.
 @login_required(login_url="/login/")
 def deletar_filme(request, filme_id):
     user_profile = request.user.userprofile
@@ -257,6 +285,8 @@ def deletar_filme(request, filme_id):
 
     return redirect('filmes')  # Redirecionar para a página de filmes após deletar o filme
 
+#História de Usuário EU013:
+#Eu como <usuario> quero conseguir adicionar meu livro favorito.
 @login_required(login_url="/login/")
 def livro_usuario(request):
     user_profile = request.user.userprofile
@@ -282,6 +312,9 @@ def livro_usuario(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
+
+#História de Usuário EU014:
+#Eu como <usuario> quero conseguir deletar o livro da minhas preferencias.
 @login_required(login_url="/login/")
 def deletar_livro(request, livro_id):
     user_profile = request.user.userprofile
@@ -298,6 +331,9 @@ def deletar_livro(request, livro_id):
 
     return redirect('livros')  # Redirecionar para a página de filmes após deletar o filme
 
+
+#História de Usuário EU015:
+#Eu como <usuario> quero conseguir adicionar minhas series favoritas.
 @login_required(login_url="/login/")
 def serie_usuario(request):
     user_profile = request.user.userprofile
@@ -323,6 +359,9 @@ def serie_usuario(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
+
+#História de Usuário EU016:
+#Eu como <usuario> quero conseguir deletar a serie da minhas preferencias.
 @login_required(login_url="/login/")
 def deletar_serie(request, serie_id):
     user_profile = request.user.userprofile
@@ -339,6 +378,9 @@ def deletar_serie(request, serie_id):
 
     return redirect('series')  # Redirecionar para a página de filmes após deletar o filme
 
+
+#História de Usuário EU017:
+#Eu como <usuario> quero conseguir adicionar minhas animações favoritas.
 @login_required(login_url="/login/")
 def animacao_usuario(request):
     user_profile = request.user.userprofile
@@ -364,6 +406,9 @@ def animacao_usuario(request):
 
     return render(request, 'perfil.html', {'form': form, 'user_profile': user_profile})
 
+
+#História de Usuário EU018:
+#Eu como <usuario> quero conseguir deletar a animação da minhas preferencias.
 @login_required(login_url="/login/")
 def deletar_animacao(request, animacao_id):
     user_profile = request.user.userprofile
@@ -380,6 +425,8 @@ def deletar_animacao(request, animacao_id):
 
     return redirect('animacoes')  # Redirecionar para a página de filmes após deletar o filme
 
+#História de Usuário EU019:
+#Eu como <usuario> quero conseguir visualizar outro perfis.
 @login_required(login_url="/login/")
 def outros_perfis(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -407,6 +454,9 @@ def outros_perfis(request, user_id):
     }
     return render(request, 'outros_perfis.html', context)
 
+
+#História de Usuário EU020:
+#Eu como <usuario> quero conseguir procurar outros perfis.
 @login_required(login_url="/login/")
 def search_profiles(request):
     if request.method == 'GET':
@@ -416,12 +466,16 @@ def search_profiles(request):
         return render(request, 'search_profiles.html', {'profiles': profiles, 'query': query})
     return redirect('home')
 
+
+#História de Usuário EU021:
+#Eu como <usuario> quero conseguir visualizar algum perfil em especifico.
 @login_required(login_url="/login/")
 def visualizar_perfil(request, user_id):
     user_profile = get_object_or_404(UserProfile, user_id=user_id)
     return render(request, 'outros_perfis.html', {'user_profile': user_profile})
 
-
+#História de Usuário EU022:
+#Eu como <usuario> quero conseguir buscar matchs.
 @login_required(login_url="/login/")
 def buscar_matches(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -443,6 +497,9 @@ def buscar_matches(request):
 
     return render(request, 'matches.html', context)
 
+
+#História de Usuário EU023:
+#Eu como <usuario> quero conseguir adicionar um match em especifico.
 @login_required(login_url='/login/')
 def adicionar_amizade(request, user_id):
     usuario_destino = get_object_or_404(User, id=user_id)
@@ -464,6 +521,9 @@ def adicionar_amizade(request, user_id):
 
     return redirect('profile_usuario')
 
+
+#História de Usuário EU024:
+#Eu como <usuario> quero conseguir deletar um match em especifico.
 @login_required(login_url='/login/')
 def excluir_amizade(request, amigo_id):
     amigo = get_object_or_404(User, id=amigo_id)
@@ -478,6 +538,9 @@ def excluir_amizade(request, amigo_id):
 
     return redirect('profile_usuario')
 
+
+#História de Usuário EU025:
+#Eu como <usuario> quero conseguir visualizar as pessoas que eu dei match.
 @login_required(login_url="/login/")
 def meus_matchs(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -487,6 +550,8 @@ def meus_matchs(request):
     return render(request, 'meus_matchs.html', context)
 
 
+#História de Usuário EU026:
+#Eu como <usuario> quero conseguir enviar mensagens pros meus matchs.
 @login_required(login_url="/login/")
 def enviar_mensagem(request, username):
     if request.method == 'POST':
@@ -502,7 +567,8 @@ def enviar_mensagem(request, username):
     mensagens = Mensagem.objects.filter(remetente=request.user, destinatario__username=username) | Mensagem.objects.filter(remetente__username=username, destinatario=request.user).order_by('data_envio')
     return render(request, 'enviar_mensagem.html', {'form': form, 'mensagens': mensagens, 'username': username})
 
-
+#História de Usuário EU027:
+#Eu como <usuario> quero conseguir visualizar as mensagens que eu recebo dos meus matchs.
 @login_required(login_url="/login/")
 def caixa_entrada(request):
     try:
